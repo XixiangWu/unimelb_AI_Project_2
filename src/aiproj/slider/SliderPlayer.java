@@ -18,7 +18,7 @@ package aiproj.slider;
 public interface SliderPlayer {
 
 	/** 
-	 * Prepare a newly created SliderPlayer to play a game of Slideron a given
+	 * Prepare a newly created SliderPlayer to play a game of Slider on a given
 	 * board, as a given player.
 	 * 
 	 * @param dimension The width and height of the board in cells
