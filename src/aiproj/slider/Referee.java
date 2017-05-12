@@ -61,7 +61,6 @@ public class Referee {
 			System.exit(1);
 		}
 		
-
 		/* * * *
 		 * now, play the game!
 		 */

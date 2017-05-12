@@ -1,11 +1,20 @@
 package aiproj.slider;
 
+import aiproj.slider.gameobject.Board;
+
 public class SmartSliderPlayer implements SliderPlayer {
 
+	private Board board;
+	
+	
+	
 	@Override
 	public void init(int dimension, String board, char player) {
-		// TODO Auto-generated method stub
 		
+		// INIT: Board
+		
+
+	
 	}
 
 	@Override
