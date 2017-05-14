@@ -8,7 +8,7 @@ import aiproj.slider.gameobject.Board;
 
 public class BrainState {
 	
-	private Board board;
+	public Board board;
 	private ArrayList<SmartPiece> pieceListSelf; // Smart piece list of the player itself, 
 	private ArrayList<SmartPiece> pieceListOpp; // Smart piece list of the opponent
 	private Piece turn;

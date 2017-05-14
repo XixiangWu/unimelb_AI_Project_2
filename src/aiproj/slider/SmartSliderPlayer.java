@@ -17,6 +17,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 			e.printStackTrace();
 		}
 		
+		System.out.println(bs.board.toString());
 	}
 
 	@Override
