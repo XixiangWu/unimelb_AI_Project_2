@@ -19,7 +19,6 @@ public class SmartSliderPlayer implements SliderPlayer {
 
 	@Override
 	public void update(Move move) {
-//		board.move(move, );
 	}
 
 	@Override
