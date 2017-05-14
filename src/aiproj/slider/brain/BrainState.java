@@ -7,14 +7,15 @@ import aiproj.slider.gameobject.Board;
 
 public class BrainState {
 	
+	private Piece turn;
 	private Board board;
 	private ArrayList<SmartPiece> pieceListSelf; // Smart piece list of the player itself, 
 	private ArrayList<SmartPiece> pieceListOpp; // Smart piece list of the opponent
 	
 	
 	/* This is a class that stores all the attributes related to the strategies*/
-	public BrainState() {
-		
+	public BrainState(Piece turn) {
+		this.turn = turn;
 	}
 	
 	public void initBoard(int dimension, String board) {
@@ -34,7 +35,8 @@ public class BrainState {
 		}
 		
 		public void buildPieceList() {
-			
+			pieceListSelf = board.Vlist;
+			pieceListOpp = board.Hlist;
 		}
 		
 		

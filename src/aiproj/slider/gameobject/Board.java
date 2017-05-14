@@ -19,8 +19,8 @@ public class Board {
 	private Piece[][] grid;
 	private int hsliders = 0, vsliders = 0, passes = 0;
 	private final int n;
-	ArrayList<SmartPiece> Vlist=new ArrayList<SmartPiece>();
-	ArrayList<SmartPiece> Hlist=new ArrayList<SmartPiece>();
+	public ArrayList<SmartPiece> Vlist=new ArrayList<SmartPiece>();
+	public ArrayList<SmartPiece> Hlist=new ArrayList<SmartPiece>();
 
 	public Board(int n) {
 		this.n = n;
