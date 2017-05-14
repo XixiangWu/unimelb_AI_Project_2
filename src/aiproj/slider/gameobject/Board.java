@@ -219,26 +219,26 @@ public class Board {
 			String row;
 			Scanner sc=new Scanner(board);
 
-			for (int i = 0; i < n; i++) {
+			for (int i = n-1; i >= 0; i--) {
 				row = sc.nextLine().replaceAll(" ", "");
 				for (int j = 0; j < n; j++) {
-					System.out.format("%d,%d=%c\n",i,j,row.charAt(j));
 					switch(row.charAt(j)){
 					case 'H':
-						grid[i][j]=Piece.HSLIDER;
+						grid[j][i]=Piece.HSLIDER;
 						Hlist.add(new SmartPiece(i,j,Piece.HSLIDER));
-						
-
 						hsliders++;
+						break;
 					case 'V':
-						grid[i][j]=Piece.VSLIDER;
+						grid[j][i]=Piece.VSLIDER;
 						Vlist.add(new SmartPiece(i,j,Piece.VSLIDER));
-						
 						vsliders++;
+						break;
 					case '+':
-						grid[i][j]=Piece.BLANK;
+						grid[j][i]=Piece.BLANK;
+						break;
 					case 'B':
-						grid[i][j]=Piece.BLOCK;
+						grid[j][i]=Piece.BLOCK;
+						break;
 					}
 				}
 			}
