@@ -1,12 +1,12 @@
 package aiproj.slider;
 
+import aiproj.slider.Referee.Piece;
 import aiproj.slider.gameobject.Board;
 
 public class SmartSliderPlayer implements SliderPlayer {
 
 	private Board board;
-	
-	
+ 
 	
 	@Override
 	public void init(int dimension, String board, char player) {
@@ -19,7 +19,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 
 	@Override
 	public void update(Move move) {
-		// TODO Auto-generated method stub
+//		board.move(move, );
 	}
 
 	@Override
