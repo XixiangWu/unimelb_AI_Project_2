@@ -13,18 +13,23 @@ public class SmartSliderPlayer implements SliderPlayer {
 		
 		// INIT: Board
 		
+		
 
 	
 	}
 
 	@Override
 	public void update(Move move) {
-
+		
 	}
 
 	@Override
 	public Move move() {
 		// TODO Auto-generated method stub
+		
+		
+		
+		
 		return new Move(0,1,Move.Direction.RIGHT);
 	}
 
