@@ -1,8 +1,10 @@
 package aiproj.slider.gameobject;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import aiproj.slider.Move;
+import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.*;
 import aiproj.slider.Referee.Piece;
 
@@ -17,6 +19,8 @@ public class Board {
 	private Piece[][] grid;
 	private int hsliders = 0, vsliders = 0, passes = 0;
 	private final int n;
+	ArrayList<SmartPiece> Vlist=new ArrayList<SmartPiece>();
+	ArrayList<SmartPiece> Hlist=new ArrayList<SmartPiece>();
 
 	public Board(int n) {
 		this.n = n;
@@ -69,15 +73,17 @@ public class Board {
 		this.grid = new Piece[n][n];
 		String row;
 		Scanner sc=new Scanner(board);
-        
+
 		for (int i = 0; i < n; i++) {
 			row = sc.nextLine();
 			for (int j = 0; j < n; j++) {
 				switch(row.charAt(j)){
 				case 'H':
 					grid[i][j]=Piece.HSLIDER;
+					Hlist.add(new SmartPiece(i,j,Piece.HSLIDER));
 				case 'V':
 					grid[i][j]=Piece.VSLIDER;
+					Vlist.add(new SmartPiece(i,j,Piece.VSLIDER));
 				case '+':
 					grid[i][j]=Piece.BLANK;
 				case 'B':
