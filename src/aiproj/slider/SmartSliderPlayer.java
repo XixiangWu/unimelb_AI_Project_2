@@ -14,12 +14,8 @@ public class SmartSliderPlayer implements SliderPlayer {
 		try {
 			bs = new BrainState.BrainStateBuilder().setBoard(dimension, board).buildPieceList(player).build();
 		} catch (IllegalBrainStateInitialization e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		System.out.println(bs.board.toString());
-
 	
 	}
 

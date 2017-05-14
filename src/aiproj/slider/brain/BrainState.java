@@ -51,7 +51,9 @@ public class BrainState {
 			pieceListOpp = new ArrayList<SmartPiece>();
 			pieceListSelf = new ArrayList<SmartPiece>();
 			
+//			System.out.println("=====================");
 //			System.out.println(this.board.toString());
+//			System.out.println("=====================");
 			
 			if (player=='H') {
 				pieceListSelf = this.board.getHlist();
