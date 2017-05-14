@@ -1,6 +1,7 @@
 package aiproj.slider;
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.brain.BrainState;
+import aiproj.slider.exception.IllegalBrainStateInitialization;
 import aiproj.slider.gameobject.Board;
 
 public class SmartSliderPlayer implements SliderPlayer {
@@ -10,10 +11,12 @@ public class SmartSliderPlayer implements SliderPlayer {
 	@Override
 	public void init(int dimension, String board, char player) {
 		
-		// INIT: Board
+		try {
+			bs = new BrainState.BrainStateBuilder().setBoard(dimension, board).buildPieceList(player).build();
+		} catch (IllegalBrainStateInitialization e) {
+			e.printStackTrace();
+		}
 		
-
-	
 	}
 
 	@Override
