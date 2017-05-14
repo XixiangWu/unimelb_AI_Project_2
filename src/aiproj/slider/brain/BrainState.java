@@ -23,10 +23,10 @@ public class BrainState {
 		this.pieceListOpp = new ArrayList<SmartPiece>();
 		this.pieceListSelf = pieceListSelf;
 		this.pieceListOpp = pieceListOpp;
-//		
-//		for (SmartPiece sp: board.getHlist()) {
-//			System.out.println(sp.i +" "+sp.j+" "+sp.turn);
-//		}
+		
+		for (SmartPiece sp: board.getHlist()) {
+			System.out.println(sp.i +" "+sp.j+" "+sp.turn);
+		}
 	}
 	
 	public void initBoard(int dimension, String board) {
@@ -51,11 +51,7 @@ public class BrainState {
 			pieceListOpp = new ArrayList<SmartPiece>();
 			pieceListSelf = new ArrayList<SmartPiece>();
 			
-			for (SmartPiece sp: board.getHlist()) {
-				System.out.println(sp.i +" "+sp.j+" "+sp.turn);
-			}
-			
-			System.out.println(this.board.toString());
+//			System.out.println(this.board.toString());
 			
 			if (player=='H') {
 				pieceListSelf = this.board.getHlist();
