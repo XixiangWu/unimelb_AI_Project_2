@@ -31,6 +31,7 @@ public class BrainState {
 		
 		public BrainStateBuilder setBoard(int dimension, String board) {
 			this.board = new Board(dimension, board);
+
 			return this;
 		}
 		

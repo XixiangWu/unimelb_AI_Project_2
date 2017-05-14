@@ -6,12 +6,13 @@ import aiproj.slider.gameobject.Board;
 public class SmartSliderPlayer implements SliderPlayer {
 
 	private BrainState bs;
+	private Board myboard;
 	
 	@Override
 	public void init(int dimension, String board, char player) {
 		
 		// INIT: Board
-		
+		myboard= new Board(dimension,board);
 
 	
 	}
@@ -28,7 +29,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 		
 		
 		
-		return new Move(0,1,Move.Direction.RIGHT);
+		return new Move(0,2,Move.Direction.UP);
 	}
 
 

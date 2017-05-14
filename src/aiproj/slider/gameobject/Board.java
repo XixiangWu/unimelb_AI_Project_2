@@ -67,32 +67,6 @@ public class Board {
 		}
 	}
 	
-
-	public Board(int dimension,String board) {
-		this.n = dimension;
-		this.grid = new Piece[n][n];
-		String row;
-		Scanner sc=new Scanner(board);
-
-		for (int i = 0; i < n; i++) {
-			row = sc.nextLine();
-			for (int j = 0; j < n; j++) {
-				switch(row.charAt(j)){
-				case 'H':
-					grid[i][j]=Piece.HSLIDER;
-					Hlist.add(new SmartPiece(i,j,Piece.HSLIDER));
-				case 'V':
-					grid[i][j]=Piece.VSLIDER;
-					Vlist.add(new SmartPiece(i,j,Piece.VSLIDER));
-				case '+':
-					grid[i][j]=Piece.BLANK;
-				case 'B':
-					grid[i][j]=Piece.BLOCK;
-				}
-			}
-		}
-		sc.close();
-	}
 	
 	
 	
@@ -220,4 +194,107 @@ public class Board {
 			return "everybody!";
 		}
 	}
+	
+	
+	
+	
+/****************************************************************/
+	
+	   // Methods created by ourself 
+	
+		// Another constructor to convert string to pieces configuration
+		public Board(int dimension,String board) {
+			this.n = dimension;
+			this.grid = new Piece[n][n];
+			String row;
+			Scanner sc=new Scanner(board);
+
+			for (int i = 0; i < n; i++) {
+				row = sc.nextLine().replaceAll(" ", "");
+				for (int j = 0; j < n; j++) {
+					System.out.format("%d,%d=%c\n",i,j,row.charAt(j));
+					switch(row.charAt(j)){
+					case 'H':
+						grid[i][j]=Piece.HSLIDER;
+						Hlist.add(new SmartPiece(i,j,Piece.HSLIDER));
+						
+
+						hsliders++;
+					case 'V':
+						grid[i][j]=Piece.VSLIDER;
+						Vlist.add(new SmartPiece(i,j,Piece.VSLIDER));
+						
+						vsliders++;
+					case '+':
+						grid[i][j]=Piece.BLANK;
+					case 'B':
+						grid[i][j]=Piece.BLOCK;
+					}
+				}
+			}
+			sc.close();
+		}
+
+	// Method for calculating the number of valid moves
+	public int validMoves(Piece turn){
+		int moves = 0;
+		int i,j;
+		if(turn == Piece.HSLIDER){
+			for (SmartPiece slider:Hlist){
+				i=slider.i;
+				j=slider.j;
+				if(grid[i+1][j] == Piece.BLANK){
+					moves++;
+				}else if(j+1 < n && grid[i][j+1] == Piece.BLANK){
+					moves++;
+				}else if(j-1 >= 0 && grid[i][j-1] == Piece.BLANK){
+					moves++;
+				}
+				
+			}
+		}else{
+			for (SmartPiece slider:Vlist){
+				i=slider.i;
+				j=slider.j;
+				if(grid[i][j+1] == Piece.BLANK){
+					moves++;
+				}else if(i+1 < n && grid[i+1][j] == Piece.BLANK){
+					moves++;
+				}else if(i-1 >= 0 && grid[i-1][j] == Piece.BLANK){
+					moves++;
+				}
+			}
+		}
+		
+		return moves;
+		
+	}
+	
+	//Method for calculating blocked opponents.
+	public int BlockOpps(Piece turn){
+		int blocks = 0;
+		int i,j;
+		if(turn == Piece.HSLIDER){
+			for (SmartPiece slider:Hlist){
+				i=slider.i;
+				j=slider.j;
+				if(grid[i][j-1] == Piece.VSLIDER){
+					blocks++;
+				}
+				
+			}
+		}else{
+			for (SmartPiece slider:Vlist){
+				i=slider.i;
+				j=slider.j;
+				if(grid[i-1][j] == Piece.BLANK){
+					blocks++;
+				}
+			}
+		}
+		
+		return blocks;
+		
+	}
+	
 }
