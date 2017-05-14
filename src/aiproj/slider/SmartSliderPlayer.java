@@ -1,18 +1,16 @@
 package aiproj.slider;
-
 import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.BrainState;
 import aiproj.slider.gameobject.Board;
 
 public class SmartSliderPlayer implements SliderPlayer {
 
-	private Board board;
- 
+	private BrainState bs;
 	
 	@Override
 	public void init(int dimension, String board, char player) {
 		
 		// INIT: Board
-		
 		
 
 	
@@ -32,5 +30,6 @@ public class SmartSliderPlayer implements SliderPlayer {
 		
 		return new Move(0,1,Move.Direction.RIGHT);
 	}
+
 
 }
