@@ -1,5 +1,7 @@
 package aiproj.slider.gameobject;
 
+import java.util.Scanner;
+
 import aiproj.slider.Move;
 import aiproj.slider.exception.*;
 import aiproj.slider.Referee.Piece;
@@ -60,39 +62,32 @@ public class Board {
 			}
 		}
 	}
+	
 
 	public Board(int dimension,String board) {
 		this.n = dimension;
 		this.grid = new Piece[n][n];
-
-
+		String row;
+		Scanner sc=new Scanner(board);
+        
 		for (int i = 0; i < n; i++) {
+			row = sc.nextLine();
 			for (int j = 0; j < n; j++) {
-				grid[i][j] = Piece.BLANK;
-			}
-		}
-
-		// add blocked positions
-		int nblocked = rng.nextInt(3);
-		if (nblocked == 0) {
-			// no blocked positions
-		} else {
-			// one or two blocked positions:
-			int i = 1 + rng.nextInt(n-2);
-			int j = 1 + rng.nextInt(n-2);
-			if (nblocked == 1) {
-				grid[i][j] = Piece.BLOCK;
-			} else if (nblocked == 2) {
-				if (rng.nextBoolean()) {
-					grid[i][i] = Piece.BLOCK;
-					grid[j][j] = Piece.BLOCK;
-				} else {
-					grid[i][j] = Piece.BLOCK;
-					grid[j][i] = Piece.BLOCK;
+				switch(row.charAt(j)){
+				case 'H':
+					grid[i][j]=Piece.HSLIDER;
+				case 'V':
+					grid[i][j]=Piece.VSLIDER;
+				case '+':
+					grid[i][j]=Piece.BLANK;
+				case 'B':
+					grid[i][j]=Piece.BLOCK;
 				}
 			}
 		}
+		sc.close();
 	}
+	
 	
 	
 	/** represent a board as text for rendering */
@@ -123,7 +118,6 @@ public class Board {
 					}
 				}
 			}
-
 			// if we make it here, there were no legal moves: pass is legal
 			passes++;
 			return;
@@ -220,7 +214,4 @@ public class Board {
 			return "everybody!";
 		}
 	}
-	
-	
-	
 }
