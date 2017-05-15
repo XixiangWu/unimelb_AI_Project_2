@@ -11,11 +11,20 @@ public class SmartSliderPlayer implements SliderPlayer {
 	@Override
 	public void init(int dimension, String board, char player) {
 		
+		// Init: BrainState for storing all the information that need to be known by Algorithm
 		try {
-			bs = new BrainState.BrainStateBuilder().setBoard(dimension, board).buildPieceList(player).build();
+			
+			bs = new BrainState.BrainStateBuilder()
+					.setBoard(dimension, board)
+					.buildPieceList(player)
+					.build();
+			
 		} catch (IllegalBrainStateInitialization e) {
 			e.printStackTrace();
 		}
+		
+		
+		
 	
 	}
 
