@@ -8,7 +8,7 @@ public class BoardEvaluateAlgorithm {
 
 	public BoardEvaluateAlgorithm() {}
 	
-	private static float BEA(Board board, BrainState bs) {
+	private static float BEA(BrainState bs) {
 		
 		return 0.0f;
 	}
