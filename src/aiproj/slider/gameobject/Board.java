@@ -15,7 +15,7 @@ import aiproj.slider.Referee.Piece;
  */
 public class Board {
 	
-	private static java.util.Random rng = new java.util.Random();
+	public static java.util.Random rng = new java.util.Random();
 
 	private Piece[][] grid;
 	private int hsliders = 0, vsliders = 0, passes = 0;
@@ -31,7 +31,10 @@ public class Board {
 	public ArrayList<SmartPiece> getHlist() {
 		return Hlist;
 	}
-
+	
+	public int getN() {
+		return n;
+	}
 
 	public Board(int n) {
 		this.n = n;
@@ -171,7 +174,12 @@ public class Board {
 		return;
 	}
 
-	private boolean canMove(int i, int j) {
+	public Piece[][] getGrid() {
+		return grid;
+	}
+
+
+	public boolean canMove(int i, int j) {
 		if (grid[i][j] == Piece.HSLIDER) {
 			// for HSLIDERs, check right, up, and down
 			return (i+1 == n) || (grid[i+1][j] == Piece.BLANK)

@@ -50,7 +50,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	 
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
-	         bestScore = BEA(bs.board);
+	         bestScore = BEA(bs.board,bestMove);
 	      } else {
 	         for (Move move : nextMoves) {
 	            // Try this move for the current "player"
@@ -74,7 +74,5 @@ public class SmartSliderPlayer implements SliderPlayer {
 	      }
 	      return new int[] {bestScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
 	   }
-	 
-
 
 }
