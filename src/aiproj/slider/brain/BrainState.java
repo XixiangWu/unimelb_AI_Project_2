@@ -9,9 +9,9 @@ import aiproj.slider.gameobject.Board;
 public class BrainState {
 	
 	public Board board;
-	private ArrayList<SmartPiece> pieceListSelf; // Smart piece list of the player itself, 
-	private ArrayList<SmartPiece> pieceListOpp; // Smart piece list of the opponent
-	private Piece turn;
+	public ArrayList<SmartPiece> pieceListSelf; // Smart piece list of the player itself, 
+	public ArrayList<SmartPiece> pieceListOpp; // Smart piece list of the opponent
+	public Piece turn;
 	
 	/* This is a class that stores all the attributes related to the strategies*/
 	protected BrainState(Board board, ArrayList<SmartPiece> pieceListOpp, ArrayList<SmartPiece> pieceListSelf, Piece turn) {
@@ -24,9 +24,9 @@ public class BrainState {
 		this.pieceListSelf = pieceListSelf;
 		this.pieceListOpp = pieceListOpp;
 		
-		for (SmartPiece sp: board.getHlist()) {
-			System.out.println(sp.i +" "+sp.j+" "+sp.turn);
-		}
+//		for (SmartPiece sp: board.getHlist()) {
+//			System.out.println(sp.i +" "+sp.j+" "+sp.turn);
+//		}
 	}
 	
 	public void initBoard(int dimension, String board) {

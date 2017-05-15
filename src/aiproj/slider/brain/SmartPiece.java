@@ -29,8 +29,6 @@ public class SmartPiece {
 	public void setup(Board board) {
 		// find the shortest path
 		calcShortestPath(board);
-		
-		
 	}
 	
 	public void calcShortestPath(Board board) {

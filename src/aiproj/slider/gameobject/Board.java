@@ -14,7 +14,7 @@ import aiproj.slider.Referee.Piece;
  */
 public class Board {
 	
-	private static java.util.Random rng = new java.util.Random();
+	public static java.util.Random rng = new java.util.Random();
 
 	private Piece[][] grid;
 	private int hsliders = 0, vsliders = 0, passes = 0;

@@ -8,9 +8,7 @@ public class BoardEvaluateAlgorithm {
 
 	public BoardEvaluateAlgorithm() {}
 	
-	private float BEA(Board board, ArrayList<SmartPiece> playerPieceList, ArrayList<SmartPiece> oppoPieceList) {
-		
-		
+	private static float BEA(Board board, BrainState bs) {
 		
 		return 0.0f;
 	}

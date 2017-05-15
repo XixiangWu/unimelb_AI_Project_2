@@ -38,7 +38,6 @@ public class DFSToGoal {
 		
 		recursion(currPieceCoor.x, currPieceCoor.y);
 		
-		
 		return null;
 	}
 	
