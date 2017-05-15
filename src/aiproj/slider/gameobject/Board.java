@@ -1,6 +1,7 @@
 package aiproj.slider.gameobject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import aiproj.slider.Move;
@@ -307,4 +308,45 @@ public class Board {
 		
 	}
 	
+	  public List<Move> generateMoves(Piece turn) {
+		      List<Move> nextMoves = new ArrayList<Move>(); // allocate List
+		 
+		      // If game over, i.e., no next move
+		      if (finished()) {
+		         return nextMoves;   // return empty list
+		      }
+		 
+		      // Search for valid moves and add to the List
+				int i,j;
+				if(turn == Piece.HSLIDER){
+					for (SmartPiece slider:Hlist){
+						i=slider.i;
+						j=slider.j;
+						if(grid[i+1][j] == Piece.BLANK){
+							nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
+						}else if(j+1 < n && grid[i][j+1] == Piece.BLANK){
+							nextMoves.add(new Move(i,j,Move.Direction.UP));
+						}else if(j-1 >= 0 && grid[i][j-1] == Piece.BLANK){
+							nextMoves.add(new Move(i,j,Move.Direction.DOWN));
+						}
+						
+					}
+				}else{
+					for (SmartPiece slider:Vlist){
+						i=slider.i;
+						j=slider.j;
+						if(grid[i][j+1] == Piece.BLANK){
+							nextMoves.add(new Move(i,j,Move.Direction.UP));
+						}else if(i+1 < n && grid[i+1][j] == Piece.BLANK){
+							nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
+						}else if(i-1 >= 0 && grid[i-1][j] == Piece.BLANK){
+							nextMoves.add(new Move(i,j,Move.Direction.LEFT));
+						}
+					}
+		      }
+		      return nextMoves;
+		   }
+	  public void undoMove(Move move){
+		  
+	  }
 }
