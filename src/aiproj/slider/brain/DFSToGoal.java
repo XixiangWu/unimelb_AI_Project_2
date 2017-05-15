@@ -1,5 +1,7 @@
 package aiproj.slider.brain;
 import java.util.ArrayList;
+
+import aiproj.slider.Move.Direction;
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
@@ -8,7 +10,6 @@ public class DFSToGoal {
 
 	public static enum GOAL {SHORTEST_PATH}
 	public static enum EDGE {UP, DOWN, LEFT, RIGHT}; 
-	public static enum DIRECTION {UP, DOWN, LEFT, RIGHT, CLEAR};
 	
 	private int n;                 // dimension of grid
     private boolean[][] visited;
@@ -158,7 +159,7 @@ public class DFSToGoal {
 		return gc;
 	}
 	
-	public static void modifyGoalCoorWhenBlocked(Coordinate currCoor,Coordinate goalCoor, DIRECTION dirBlocked, Board board) {
+	public static void modifyGoalCoorWhenBlocked(Coordinate currCoor,Coordinate goalCoor, Direction dirBlocked, Board board) {
 		
 		switch(dirBlocked) {
 		case UP: goalCoor.x--; break;  // move goal coordinate left

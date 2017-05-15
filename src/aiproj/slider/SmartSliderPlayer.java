@@ -41,42 +41,8 @@ public class SmartSliderPlayer implements SliderPlayer {
 
 	@Override
 	public Move move() {
-		
-		SmartPiece p = null;
-		
-		Direction d = null;
-		
-		int timer = 0;
-		
-		timer++;
-			
-		while (d == null && timer <= 10) {
-			
-			timer++;
-			
-			if (bs.turn == Piece.VSLIDER) {
-
-				p = bs.pieceListSelf.get(Board.rng.nextInt(bs.pieceListSelf.size()-1));
-
-				if(bs.board.canMove(p.i,p.j+1)) {
-					d = Direction.UP;
-				}	
-			}
-			
-			if (bs.turn == Piece.HSLIDER) {
-				
-				p = bs.pieceListOpp.get(Board.rng.nextInt(bs.pieceListOpp.size()-1));
-				
-				if(bs.board.canMove(p.i+1,p.j)) {
-					d = Direction.RIGHT;
-				}
-			}
-		}		
-		//Board.rng.nextInt(Direction.values().length)
-		
-		return new Move(p.i,
-						p.j,
-						d);
+	
+		return new Move(0,1, Direction.RIGHT);
 	}
 
 
