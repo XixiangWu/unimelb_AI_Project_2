@@ -1,8 +1,12 @@
 package aiproj.slider;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.Move.Direction;
+import aiproj.slider.brain.BoardEvaluateAlgorithm;
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
@@ -40,10 +44,15 @@ public class SmartSliderPlayer implements SliderPlayer {
 
 	@Override
 	public void update(Move move) {
-			bs.board.update(move);
-			for (SmartPiece piece: bs.board.getVlist()){
-				System.out.format("piece:%d,%d\n",piece.i,piece.j);
-			}
+		
+		// update board stored in bs
+		bs.board.update(move);
+		for (SmartPiece piece: bs.board.getVlist()){
+			System.out.format("piece:%d,%d\n",piece.i,piece.j);
+		}
+		
+		// update OSA algorithm
+		
 			
 	}
 
@@ -116,6 +125,9 @@ public class SmartSliderPlayer implements SliderPlayer {
 	      
 	   }
 	public int evaluate(){
+		
+//		BoardEvaluateAlgorithm.BEA(bs, moveLst);
+		
 		return (int)(Math.random()*100);
 		
 	}

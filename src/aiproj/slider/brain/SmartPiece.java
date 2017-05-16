@@ -3,6 +3,7 @@ package aiproj.slider.brain;
 import java.util.ArrayList;
 
 import aiproj.slider.Move;
+import aiproj.slider.Move.Direction;
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
@@ -43,8 +44,24 @@ public class SmartPiece {
 //			}
 //			System.out.println();
 //		}
+	}
+	
+	public void update(Direction d) {
+		
+		// when this piece is moved
+		switch (d) {
+		case UP: co.y++; break;
+		case DOWN: co.y--; break;
+		case RIGHT: co.x++; break;
+		case LEFT: co.y++; break;
+		}
 		
 	}
+	
+	public boolean isOffset() {
+		if ()
+	}
+	
 	
 	/** Evaluation of all the scores obtained by SmartPiece*/
 	public float Eval(Move[] move) {

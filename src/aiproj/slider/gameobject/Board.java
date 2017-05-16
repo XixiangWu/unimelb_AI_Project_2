@@ -367,6 +367,8 @@ public class Board {
 		      }
 		      return nextMoves;
 		   }
+	  
+	  
 	  public void update(Move move){
 		  Piece piece;
 
@@ -404,7 +406,6 @@ public class Board {
 				grid[move.i][move.j]=Piece.BLANK;
 				grid[toi][toj] = piece;
 				if(piece == Piece.HSLIDER){	
-					
 					updateList(Hlist,new SmartPiece(toi,toj,piece),new SmartPiece(move.i,move.j,piece));
 				}else{
 					updateList(Vlist,new SmartPiece(toi,toj,piece),new SmartPiece(move.i,move.j,piece));
@@ -412,6 +413,7 @@ public class Board {
 			}
 			return;
 	  }
+	  
 	  public void undoMove(Move move){
 		  Piece piece;
 		// null move
