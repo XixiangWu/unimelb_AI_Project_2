@@ -349,15 +349,10 @@ public class Board {
 					}
 				}else{
 					for (SmartPiece slider:Vlist){
-<<<<<<< HEAD
-
-						i=slider.i;
-						j=slider.j;
-=======
 						
 						i=slider.co.x;
 						j=slider.co.y;
->>>>>>> origin/master
+
 						if(grid[i][j]== turn){
 							if((j+1 < n && grid[i][j+1] == Piece.BLANK )||(j+1 == n)){
 								
@@ -473,15 +468,17 @@ public class Board {
 		  
 		  while(iterator.hasNext()){
 			  SmartPiece piece = iterator.next();
-<<<<<<< HEAD
-			  if(piece.i==i && piece.j==j){
-				  
-				 piece.i=toi;
-				 piece.j = toj;
-=======
-			  if(piece.co.x==oldPiece.co.x && piece.co.y==oldPiece.co.y){
-				  iterator.remove();
->>>>>>> origin/master
+			  if(piece.co.x==i && piece.co.y==j){
+				 if(Change){
+					 piece.co.x = toi;
+					 piece.co.y = toj;
+				 }else if(Dele){
+					 piece.isOff=ture;
+				 }else if(recovery){
+					 piece.isOff=False;
+				 }
+				 
+
 			  }
 		  }
 	  }
