@@ -475,6 +475,7 @@ public class Board {
 		  while(iterator.hasNext()){
 			  SmartPiece piece = iterator.next();
 			  if(piece.co.x==i && piece.co.y==j){
+
 				  switch (command){
 				  case 1:
 					 piece.co.x = toi;
