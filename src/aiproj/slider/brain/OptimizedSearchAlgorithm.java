@@ -52,7 +52,7 @@ public class OptimizedSearchAlgorithm {
 		boolean didStart = false;
 		
 		//INIT: Temporary Coordinate
-		Coordinate tempCoor = (needTransform) ? new Coordinate(p.j, p.i) : new Coordinate(p.i, p.j);
+		Coordinate tempCoor = (needTransform) ? new Coordinate(p.co.y, p.co.x) : new Coordinate(p.co.x, p.co.y);
 		
 		// INIT: optimizedPathTable
 		ArrayList<ArrayList<Coordinate>> optimizedPathTable = new ArrayList<ArrayList<Coordinate>>();
@@ -201,7 +201,7 @@ public class OptimizedSearchAlgorithm {
 //			}
 			
 			// Clean all the elements 
-			tempCoor = (needTransform) ? new Coordinate(p.j, p.i) : new Coordinate(p.i, p.j);
+			tempCoor = (needTransform) ? new Coordinate(p.co.y, p.co.x) : new Coordinate(p.co.x, p.co.y);
 			shouldAbort = false;
 			
 		}
