@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 import aiproj.slider.Referee.Piece;
-import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
 
 public class SmartPiece {
 	
 	// Foundation attributes
-	public int i;
-	public int j;
 	public Coordinate co;
 	public Piece turn;
 	
@@ -23,8 +20,6 @@ public class SmartPiece {
 	
 	/** Smart piece stores all the information that should be known by algorithm and derived attributes for further calculation */
 	public SmartPiece(int i, int j, Piece turn) {
-		this.i = i;
-		this.j = j;
 		this.co = new Coordinate(i, j); // used for further calculation
 		this.turn = turn;
 	}
@@ -50,18 +45,46 @@ public class SmartPiece {
 		
 		// when this piece is moved
 		switch (d) {
-		case UP: co.y++; break;
-		case DOWN: co.y--; break;
-		case RIGHT: co.x++; break;
-		case LEFT: co.y++; break;
+		case UP: this.co.y++; break;
+		case DOWN: this.co.y--; break;
+		case RIGHT: this.co.x++; break;
+		case LEFT: this.co.y++; break;
 		}
 		
-		// 
+		// check if the piece is still on the original shortest path 
+		boolean isFound = false;
+		ArrayList<Coordinate> newShortestPath = new ArrayList<Coordinate>();
+		
+		for (ArrayList<Coordinate> coList : pathTableOSA) {
+			for (Coordinate co: coList) {
+				if (co.x == this.co.x && co.y == this.co.y) {
+					isFound = true;
+					
+					if (pathTableOSA.size() > 1) {
+						for (Coordinate tempCo: coList) {
+							newShortestPath.add(tempCo);
+						}
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		// if it is still on the path
+		if (isFound) {
+			// delete every thing else in table and leave only this path
+			pathTableOSA.clear();
+			pathTableOSA.add(newShortestPath);
+			
+		} else { // if it is off the path
+			
+		}
 		
 	}
 	
-	public boolean isOffset() {
-		if ()
+	public boolean isOffThePath() {
+		
 	}
 	
 	

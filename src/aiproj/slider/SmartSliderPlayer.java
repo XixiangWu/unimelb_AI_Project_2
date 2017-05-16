@@ -1,17 +1,10 @@
 package aiproj.slider;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 import aiproj.slider.Referee.Piece;
-import aiproj.slider.Move.Direction;
-import aiproj.slider.brain.BoardEvaluateAlgorithm;
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
-import aiproj.slider.exception.IllegalMoveException;
-import aiproj.slider.gameobject.Coordinate;
 
 public class SmartSliderPlayer implements SliderPlayer {
 
@@ -56,7 +49,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 		//update board stored in bs
 		bs.board.update(move);
 		for (SmartPiece piece: bs.board.getVlist()){
-			System.out.format("piece:%d,%d\n",piece.i,piece.j);
+			System.out.format("piece:%d,%d\n",piece.co.x,piece.co.y);
 		}
 			
 	}

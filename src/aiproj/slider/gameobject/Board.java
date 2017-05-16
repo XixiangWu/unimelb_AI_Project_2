@@ -263,8 +263,8 @@ public class Board {
 		int i,j;
 		if(turn == Piece.HSLIDER){
 			for (SmartPiece slider:Hlist){
-				i=slider.i;
-				j=slider.j;
+				i=slider.co.x;
+				j=slider.co.y;
 				if((i+1 < n && grid[i+1][j] == Piece.BLANK) || (i+1 == n)){
 					moves++;
 				}else if(j+1 < n && grid[i][j+1] == Piece.BLANK){
@@ -276,8 +276,8 @@ public class Board {
 			}
 		}else{
 			for (SmartPiece slider:Vlist){
-				i=slider.i;
-				j=slider.j;
+				i=slider.co.x;
+				j=slider.co.y;
 				if((j+1 < n && grid[i][j+1] == Piece.BLANK )||(j+1 == n)){
 					moves++;
 				}else if(i+1 < n && grid[i+1][j] == Piece.BLANK){
@@ -298,8 +298,8 @@ public class Board {
 		int i,j;
 		if(turn == Piece.HSLIDER){
 			for (SmartPiece slider:Hlist){
-				i=slider.i;
-				j=slider.j;
+				i=slider.co.x;
+				j=slider.co.y;
 				if(j-1 >= 0 && grid[i][j-1] == Piece.VSLIDER){
 					blocks++;
 				}
@@ -307,8 +307,8 @@ public class Board {
 			}
 		}else{
 			for (SmartPiece slider:Vlist){
-				i=slider.i;
-				j=slider.j;
+				i=slider.co.x;
+				j=slider.co.y;
 				if(i-1 >= 0 && grid[i-1][j] == Piece.HSLIDER){
 					blocks++;
 				}
@@ -331,8 +331,8 @@ public class Board {
 				if(turn == Piece.HSLIDER){
 					
 					for (SmartPiece slider:Hlist){
-						i=slider.i;
-						j=slider.j;
+						i=slider.co.x;
+						j=slider.co.y;
 						if(grid[i][j]== turn){
 							if((i+1 < n && grid[i+1][j] == Piece.BLANK) || (i+1 == n)){
 								nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
@@ -349,8 +349,8 @@ public class Board {
 				}else{
 					for (SmartPiece slider:Vlist){
 						
-						i=slider.i;
-						j=slider.j;
+						i=slider.co.x;
+						j=slider.co.y;
 						if(grid[i][j]== turn){
 							if((j+1 < n && grid[i][j+1] == Piece.BLANK )||(j+1 == n)){
 								
@@ -461,7 +461,7 @@ public class Board {
 		  Iterator<SmartPiece> iterator = list.iterator();
 		  while(iterator.hasNext()){
 			  SmartPiece piece = iterator.next();
-			  if(piece.i==oldPiece.i && piece.j==oldPiece.j){
+			  if(piece.co.x==oldPiece.co.x && piece.co.y==oldPiece.co.y){
 				  iterator.remove();
 			  }
 		  }

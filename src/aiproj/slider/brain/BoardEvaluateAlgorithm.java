@@ -74,7 +74,7 @@ public class BoardEvaluateAlgorithm {
 	public static SmartPiece retrieveSmartPiece(int x, int y, ArrayList<SmartPiece> pieceLst) {
 		
 		for (SmartPiece sp: pieceLst) {
-			if (sp.i == x && sp.j == y) {
+			if (sp.co.x == x && sp.co.y == y) {
 				return sp;
 			}
 		}
@@ -85,7 +85,7 @@ public class BoardEvaluateAlgorithm {
 	/** Determine if the move is the fastest move current */
 	public static float OSACompatibleTest(SmartPiece sp, Direction d, int index) {
 		
-		Coordinate co = new Coordinate(sp.i, sp.j);
+		Coordinate co = new Coordinate(sp.co.x, sp.co.y);
 		
 		switch (d) {
 		case UP: co.y++; break;
