@@ -392,13 +392,13 @@ public class Board {
 			if (piece == Piece.HSLIDER && toi == n) {
 				grid[move.i][move.j] = Piece.BLANK;
 				hsliders--;
-				Hlist.remove(new SmartPiece(move.i,move.j,Piece.HSLIDER));
+				Hlist.remove();
 				return;
 
 			} else if (piece == Piece.VSLIDER && toj == n){
 				grid[move.i][move.j] = Piece.BLANK;
 				vsliders--;
-				Vlist.remove(new SmartPiece(move.i,move.j,Piece.VSLIDER));
+				Vlist.remove();
 				
 				return;
 			}
@@ -407,9 +407,9 @@ public class Board {
 				grid[toi][toj] = piece;
 				if(piece == Piece.HSLIDER){	
 					
-					updateList(Hlist,new SmartPiece(toi,toj,piece),new SmartPiece(move.i,move.j,piece));
+					updateList(Hlist,move.i,move.j,toi,toj);
 				}else{
-					updateList(Vlist,new SmartPiece(toi,toj,piece),new SmartPiece(move.i,move.j,piece));
+					updateList(Vlist,move.i,move.j,toi,toj);
 				}
 			}
 			return;
@@ -450,9 +450,9 @@ public class Board {
 				piece = grid[toi][toj];
 				grid[toi][toj] = Piece.BLANK;
 				if(piece == Piece.HSLIDER){
-					updateList(Hlist,new SmartPiece(move.i,move.j,piece),new SmartPiece(toi,toj,piece));		
+					updateList(Hlist,toi,toj,move.i,move.j);		
 				}else{
-					updateList(Vlist,new SmartPiece(move.i,move.j,piece),new SmartPiece(toi,toj,piece));
+					updateList(Vlist,toi,toj,move.i,move.j);
 				}
 			}
 
@@ -462,19 +462,16 @@ public class Board {
 			return;
 	  }
 	  
-	  public void updateList(ArrayList<SmartPiece> list,SmartPiece newPiece,SmartPiece oldPiece){
+	  public void updateList(ArrayList<SmartPiece> list,int i,int j,int toi,int toj){
 		  Iterator<SmartPiece> iterator = list.iterator();
 		  
 		  while(iterator.hasNext()){
 			  SmartPiece piece = iterator.next();
-			  if(piece.i==oldPiece.i && piece.j==oldPiece.j){
+			  if(piece.i==i && piece.j==j){
 				  
-				  iterator.remove();
-				  
+				 piece.i=toi;
+				 piece.j = toj;
 			  }
-		  }
-		  if(newPiece != null){
-		  list.add(newPiece);
 		  }
 	  }
 }

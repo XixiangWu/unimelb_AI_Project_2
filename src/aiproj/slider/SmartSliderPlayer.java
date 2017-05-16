@@ -1,8 +1,12 @@
 package aiproj.slider;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.Move.Direction;
+import aiproj.slider.brain.BoardEvaluateAlgorithm;
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
@@ -41,13 +45,19 @@ public class SmartSliderPlayer implements SliderPlayer {
 
 	@Override
 	public void update(Move move) {
-			final char[] DRE = {'U', 'D', 'L', 'R'};
-			bs.board.update(move);
+		
+		final char[] DRE = {'U', 'D', 'L', 'R'};
+		bs.board.update(move);
 			
-		      List<Move> nextMoves = bs.board.generateMoves(bs.turn);
-		      for (Move move1 : nextMoves) {
-		    	  System.out.format("all moves%d,%d,%c\n",move1.i,move1.j,DRE[move1.d.ordinal()]);
-		      }
+		List<Move> nextMoves = bs.board.generateMoves(bs.turn);
+		for (Move move1 : nextMoves) {
+			System.out.format("all moves%d,%d,%c\n",move1.i,move1.j,DRE[move1.d.ordinal()]);
+		}
+		//update board stored in bs
+		bs.board.update(move);
+		for (SmartPiece piece: bs.board.getVlist()){
+			System.out.format("piece:%d,%d\n",piece.i,piece.j);
+		}
 			
 	}
 
@@ -127,6 +137,9 @@ public class SmartSliderPlayer implements SliderPlayer {
 	      
 	   }
 	public int evaluate(){
+		
+//		BoardEvaluateAlgorithm.BEA(bs, moveLst);
+		
 		return (int)(Math.random()*100);
 		
 	}
