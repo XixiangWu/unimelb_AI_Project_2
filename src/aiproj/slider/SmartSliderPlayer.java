@@ -1,13 +1,8 @@
 package aiproj.slider;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.List;
-
 import aiproj.slider.Referee.Piece;
-=======
-
 import aiproj.slider.Move.Direction;
->>>>>>> origin/master
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
@@ -21,13 +16,6 @@ public class SmartSliderPlayer implements SliderPlayer {
 	
 	@Override
 	public void init(int dimension, String board, char player) {
-<<<<<<< HEAD
-		try {
-			bs = new BrainState.BrainStateBuilder().setBoard(dimension, board).buildPieceList(player).build();
-		} catch (IllegalBrainStateInitialization e) {
-			e.printStackTrace();
-		}
-=======
 
 		System.out.println(" ======== next player ========");
 		timer = new CPUTimer();
@@ -48,8 +36,6 @@ public class SmartSliderPlayer implements SliderPlayer {
 		}
 		
 		System.out.println(String.format("Time usage: %f",timer.clock()/1000000000.0f));
-		
->>>>>>> origin/master
 	}
 
 	@Override
