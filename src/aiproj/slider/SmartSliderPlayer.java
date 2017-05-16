@@ -40,14 +40,14 @@ public class SmartSliderPlayer implements SliderPlayer {
 	public void update(Move move) {
 		
 		final char[] DRE = {'U', 'D', 'L', 'R'};
-		bs.board.update(move);
 			
-		List<Move> nextMoves = bs.board.generateMoves(bs.turn);
-		for (Move move1 : nextMoves) {
-			System.out.format("all moves%d,%d,%c\n",move1.i,move1.j,DRE[move1.d.ordinal()]);
-		}
+//		List<Move> nextMoves = bs.board.generateMoves(bs.turn);
+//		for (Move move1 : nextMoves) {
+//			System.out.format("all moves%d,%d,%c\n",move1.i,move1.j,DRE[move1.d.ordinal()]);
+//		}
 		//update board stored in bs
 		bs.board.update(move);
+		
 		for (SmartPiece piece: bs.board.getVlist()){
 			System.out.format("piece:%d,%d\n",piece.co.x,piece.co.y);
 		}
@@ -58,9 +58,15 @@ public class SmartSliderPlayer implements SliderPlayer {
 	public Move move() {
 		final char[] DRE = {'U', 'D', 'L', 'R'};
 		// TODO Auto-generated method stub
-		int[] result = minimax(3,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
-		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]));
+		System.out.println("Before MINI");
+		System.out.println(bs.board.toString());
+		int[] result = minimax(6,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
 		System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
+		System.out.println("Before update");
+		System.out.println(bs.board.toString());
+		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]));
+		System.out.println("After update");
+		System.out.println(bs.board.toString());
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
 
 		

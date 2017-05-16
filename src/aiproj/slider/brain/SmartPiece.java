@@ -91,9 +91,9 @@ public class SmartPiece {
 		
 	}
 	
-	public boolean isOffThePath() {
+	//public boolean isOffThePath() {
 		
-	}
+	//}
 	
 	
 	/** Evaluation of all the scores obtained by SmartPiece*/

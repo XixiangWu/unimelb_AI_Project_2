@@ -332,37 +332,40 @@ public class Board {
 				if(turn == Piece.HSLIDER){
 					
 					for (SmartPiece slider:Hlist){
-						i=slider.co.x;
-						j=slider.co.y;
-						if(grid[i][j]== turn){
-							if((i+1 < n && grid[i+1][j] == Piece.BLANK) || (i+1 == n)){
-								nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
-							}
-							if(j+1 < n && grid[i][j+1] == Piece.BLANK){
-								nextMoves.add(new Move(i,j,Move.Direction.UP));
-							}
-							if(j-1 >= 0 && grid[i][j-1] == Piece.BLANK){
-								nextMoves.add(new Move(i,j,Move.Direction.DOWN));
+						if (slider.isOffEdge==false){
+							i=slider.co.x;
+							j=slider.co.y;
+							if(grid[i][j]== turn){
+								if((i+1 < n && grid[i+1][j] == Piece.BLANK) || (i+1 == n)){
+									nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
+								}
+								if(j+1 < n && grid[i][j+1] == Piece.BLANK){
+									nextMoves.add(new Move(i,j,Move.Direction.UP));
+								}
+								if(j-1 >= 0 && grid[i][j-1] == Piece.BLANK){
+									nextMoves.add(new Move(i,j,Move.Direction.DOWN));
+								}
 							}
 						}
 						
 					}
 				}else{
 					for (SmartPiece slider:Vlist){
-						
-						i=slider.co.x;
-						j=slider.co.y;
-
-						if(grid[i][j]== turn){
-							if((j+1 < n && grid[i][j+1] == Piece.BLANK )||(j+1 == n)){
-								
-								nextMoves.add(new Move(i,j,Move.Direction.UP));
-							}
-							if(i+1 < n && grid[i+1][j] == Piece.BLANK){
-								nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
-							}
-							if(i-1 >= 0 && grid[i-1][j] == Piece.BLANK){
-								nextMoves.add(new Move(i,j,Move.Direction.LEFT));
+						if (slider.isOffEdge==false){
+							i=slider.co.x;
+							j=slider.co.y;
+	
+							if(grid[i][j]== turn){
+								if((j+1 < n && grid[i][j+1] == Piece.BLANK )||(j+1 == n)){
+									
+									nextMoves.add(new Move(i,j,Move.Direction.UP));
+								}
+								if(i+1 < n && grid[i+1][j] == Piece.BLANK){
+									nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
+								}
+								if(i-1 >= 0 && grid[i-1][j] == Piece.BLANK){
+									nextMoves.add(new Move(i,j,Move.Direction.LEFT));
+								}
 							}
 						}
 					}
@@ -379,6 +382,7 @@ public class Board {
 				}
 			
 			piece = grid[move.i][move.j];
+			
 			// where's the next space?
 			int toi = move.i, toj = move.j;
 			switch(move.d){
@@ -393,24 +397,24 @@ public class Board {
 			if (piece == Piece.HSLIDER && toi == n) {
 				grid[move.i][move.j] = Piece.BLANK;
 				hsliders--;
-				Hlist.remove();
+				updateList(Hlist,move.i,move.j,toi,toj,3);
 				return;
 
 			} else if (piece == Piece.VSLIDER && toj == n){
 				grid[move.i][move.j] = Piece.BLANK;
 				vsliders--;
-				Vlist.remove();
+				updateList(Vlist,move.i,move.j,toi,toj,3);
 				
 				return;
-			}
-			else{
-				grid[move.i][move.j]=Piece.BLANK;
+			}else{
+				
 				grid[toi][toj] = piece;
-				if(piece == Piece.HSLIDER){	
-					
-					updateList(Hlist,move.i,move.j,toi,toj);
+				grid[move.i][move.j]=Piece.BLANK;
+
+				if(piece == Piece.HSLIDER){		
+					updateList(Hlist,move.i,move.j,toi,toj,1);
 				}else{
-					updateList(Vlist,move.i,move.j,toi,toj);
+					updateList(Vlist,move.i,move.j,toi,toj,1);
 				}
 			}
 			return;
@@ -436,24 +440,26 @@ public class Board {
 			if (move.d == Move.Direction.RIGHT && toi == n) {
 				piece = Piece.HSLIDER;
 				hsliders++;
-				
-				
-				Hlist.add(new SmartPiece(move.i,move.j,Piece.HSLIDER));
+				grid[move.i][move.j]=piece;
+				updateList(Hlist,toi,toj,move.i,move.j,2);
 				
 			} else if (move.d == Move.Direction.UP && toj == n){
 				piece = Piece.VSLIDER;
 				vsliders++;
+				grid[move.i][move.j]=piece;
 				System.out.println(vsliders);
-				
-				Vlist.add(new SmartPiece(move.i,move.j,Piece.VSLIDER));
+				updateList(Vlist,toi,toj,move.i,move.j,2);
 				
 			}else{
 				piece = grid[toi][toj];
+				
+				grid[move.i][move.j]=piece;
+				
 				grid[toi][toj] = Piece.BLANK;
 				if(piece == Piece.HSLIDER){
-					updateList(Hlist,toi,toj,move.i,move.j);		
+					updateList(Hlist,toi,toj,move.i,move.j,1);		
 				}else{
-					updateList(Vlist,toi,toj,move.i,move.j);
+					updateList(Vlist,toi,toj,move.i,move.j,1);
 				}
 			}
 
@@ -463,19 +469,20 @@ public class Board {
 			return;
 	  }
 	  
-	  public void updateList(ArrayList<SmartPiece> list,int i,int j,int toi,int toj){
+	  public void updateList(ArrayList<SmartPiece> list,int i,int j,int toi,int toj,int command){
 		  Iterator<SmartPiece> iterator = list.iterator();
 		  
 		  while(iterator.hasNext()){
 			  SmartPiece piece = iterator.next();
 			  if(piece.co.x==i && piece.co.y==j){
-				 if(Change){
+				  switch (command){
+				  case 1:
 					 piece.co.x = toi;
 					 piece.co.y = toj;
-				 }else if(Dele){
-					 piece.isOff=ture;
-				 }else if(recovery){
-					 piece.isOff=False;
+				  case 2:
+					 piece.isOffEdge=true;
+				  case 3:
+					 piece.isOffEdge=false;
 				 }
 				 
 
