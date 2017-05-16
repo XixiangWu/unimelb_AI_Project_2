@@ -2,6 +2,7 @@ package aiproj.slider.brain;
 
 import java.util.ArrayList;
 
+import aiproj.slider.Move;
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
@@ -15,12 +16,9 @@ public class SmartPiece {
 	public Piece turn;
 	
 	// Derived attributes
-	public ArrayList<Coordinate> pathOSA;
+	public ArrayList<ArrayList<Coordinate>> pathTableOSA;
 	public int noShortestOSA;
 	public int wasteStep = 0;
-	
-	// 
-	
 	
 	/** Smart piece stores all the information that should be known by algorithm and derived attributes for further calculation */
 	public SmartPiece(int i, int j, Piece turn) {
@@ -30,21 +28,27 @@ public class SmartPiece {
 		this.turn = turn;
 	}
 	
-	/** For analysing all the information in piece */
-	public void setup(ArrayList<Coordinate> pathOSA) {
+	/** This is a method used for evaluating several possible short path from current position to goal edge. This function will 
+	 * generally ignore the piece which is not a BLOCK.*/
+	public void setup(ArrayList<ArrayList<Coordinate>> pathOSA) {
 		
-		pathOSA = new ArrayList<Coordinate>();
-		this.pathOSA = pathOSA;
+		pathOSA = new ArrayList<ArrayList<Coordinate>>();
+		this.pathTableOSA= pathOSA;
 		noShortestOSA = pathOSA.size();
 		
 	}
 	
-	/** This is a method used for evaluating a possible shortest path from current position to goal edge. 
-	 * This function will generally ignore the piece which is not a BLOCK even if it blocks the path to goal
-	 * edge at present */
-	public void evalPossiblePath(Board board) {
+	/** Evaluation of all the score obatained by SmartPiece*/
+	public float Eval(Move move) {
 		
+		// INIT: a float score
+		float totScore = 0.0f;
+		
+		// Step 1: 
+		
+		
+		
+		return totScore;
 	}
-	
 	
 }

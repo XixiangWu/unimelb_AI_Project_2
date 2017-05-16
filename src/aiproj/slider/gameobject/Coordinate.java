@@ -12,6 +12,12 @@ public class Coordinate {
 	
 	/** Compare coordinate */
 	public boolean equal(Coordinate co) {
+		
+		if (this == null || co == null) {
+			return false;
+		}
+		
+		
 		if (this.x == co.x && this.y == co.y) {
 			return true;
 		}

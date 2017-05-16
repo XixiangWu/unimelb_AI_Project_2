@@ -1,19 +1,22 @@
 package aiproj.slider;
 import aiproj.slider.Move.Direction;
 import aiproj.slider.brain.BrainState;
-import aiproj.slider.brain.OptimizedSearchAlgorithm;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
 import aiproj.slider.exception.IllegalMoveException;
 
 public class SmartSliderPlayer implements SliderPlayer {
 
 	private BrainState bs;
-	private OptimizedSearchAlgorithm osa;
+	private CPUTimer timer;
 	
 	@Override
 	public void init(int dimension, String board, char player) {
 
-		// Init: BrainState for storing all the information that need to be known by Algorithm
+		System.out.println(" ======== next player ========");
+		timer = new CPUTimer();
+		timer.start();
+		
+		// INIT: BrainState for storing all the information that need to be known by Algorithm
 		try {
 			
 			bs = new BrainState.BrainStateBuilder()
@@ -27,6 +30,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 			e.printStackTrace();
 		}
 		
+		System.out.println(String.format("Time usage: %f",timer.clock()/1000000000.0f));
 		
 	}
 

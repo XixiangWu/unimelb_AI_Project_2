@@ -78,11 +78,11 @@ public class BrainState {
 		public BrainStateBuilder buildSmartPieceByOSA() {
 						
 			for (SmartPiece sp: pieceListSelf) {
-				sp.setup(osa.OptimizedSearchAlgorithm(sp));
+				sp.setup(osa.OptimizedSearchAlgorithmEdge(sp));
 			}
 
 			for (SmartPiece sp: pieceListOpp) {
-				sp.setup(osa.OptimizedSearchAlgorithm(sp));
+				sp.setup(osa.OptimizedSearchAlgorithmEdge(sp));
 			}
 			
 			return this;

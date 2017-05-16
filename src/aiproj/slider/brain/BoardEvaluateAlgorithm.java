@@ -14,6 +14,7 @@ public class BoardEvaluateAlgorithm {
 	 * provided after evaluating */
 	private static float BEA(BrainState bs, Move move) {
 		
+		// 
 		
 		
 		
