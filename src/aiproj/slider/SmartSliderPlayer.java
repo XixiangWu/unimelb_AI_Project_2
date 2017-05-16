@@ -1,25 +1,55 @@
 package aiproj.slider;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.List;
 
 import aiproj.slider.Referee.Piece;
+=======
+
+import aiproj.slider.Move.Direction;
+>>>>>>> origin/master
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
 import aiproj.slider.exception.IllegalMoveException;
-import aiproj.slider.gameobject.Board;
+import aiproj.slider.gameobject.Coordinate;
 
 public class SmartSliderPlayer implements SliderPlayer {
 
 	private BrainState bs;
+	private CPUTimer timer;
 	
 	@Override
 	public void init(int dimension, String board, char player) {
+<<<<<<< HEAD
 		try {
 			bs = new BrainState.BrainStateBuilder().setBoard(dimension, board).buildPieceList(player).build();
 		} catch (IllegalBrainStateInitialization e) {
 			e.printStackTrace();
 		}
+=======
+
+		System.out.println(" ======== next player ========");
+		timer = new CPUTimer();
+		timer.start();
+		
+		// INIT: BrainState for storing all the information that need to be known by Algorithm
+		try {
+			
+			bs = new BrainState.BrainStateBuilder()
+					.setBoard(dimension, board)
+					.buildPieceList(player)
+					.buildOSA()
+					.buildSmartPieceByOSA()
+					.build();
+			
+		} catch (IllegalBrainStateInitialization e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(String.format("Time usage: %f",timer.clock()/1000000000.0f));
+		
+>>>>>>> origin/master
 	}
 
 	@Override

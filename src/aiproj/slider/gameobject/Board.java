@@ -87,7 +87,7 @@ public class Board {
 	
 	
 	/** represent a board as text for rendering */
-	private static final char[] SYMBOLS = {'+', 'B', 'H', 'V'};
+	public static final char[] SYMBOLS = {'+', 'B', 'H', 'V'};
 	public String toString(){
 		StringBuilder s = new StringBuilder(2 * n * n);
 		for (int j = n-1; j >= 0; j--) {
@@ -199,6 +199,7 @@ public class Board {
 			return false;
 		}
 	}
+	
 
 	public boolean finished() {
 		return (hsliders == 0) || (vsliders == 0) || (passes > 1);
@@ -221,7 +222,7 @@ public class Board {
 	
 /****************************************************************/
 	
-	   // Methods created by ourself 
+	   // Methods created by ourselves
 	
 		// Another constructor to convert string to pieces configuration
 		public Board(int dimension,String board) {
