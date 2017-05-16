@@ -265,7 +265,7 @@ public class Board {
 			for (SmartPiece slider:Hlist){
 				i=slider.i;
 				j=slider.j;
-				if(grid[i+1][j] == Piece.BLANK){
+				if((i+1 < n && grid[i+1][j] == Piece.BLANK) || (i+1 == n)){
 					moves++;
 				}else if(j+1 < n && grid[i][j+1] == Piece.BLANK){
 					moves++;
@@ -278,7 +278,7 @@ public class Board {
 			for (SmartPiece slider:Vlist){
 				i=slider.i;
 				j=slider.j;
-				if(grid[i][j+1] == Piece.BLANK){
+				if((j+1 < n && grid[i][j+1] == Piece.BLANK )||(j+1 == n)){
 					moves++;
 				}else if(i+1 < n && grid[i+1][j] == Piece.BLANK){
 					moves++;
@@ -300,7 +300,7 @@ public class Board {
 			for (SmartPiece slider:Hlist){
 				i=slider.i;
 				j=slider.j;
-				if(grid[i][j-1] == Piece.VSLIDER){
+				if(j-1 >= 0 && grid[i][j-1] == Piece.VSLIDER){
 					blocks++;
 				}
 				
@@ -309,7 +309,7 @@ public class Board {
 			for (SmartPiece slider:Vlist){
 				i=slider.i;
 				j=slider.j;
-				if(grid[i-1][j] == Piece.BLANK){
+				if(i-1 >= 0 && grid[i-1][j] == Piece.HSLIDER){
 					blocks++;
 				}
 			}

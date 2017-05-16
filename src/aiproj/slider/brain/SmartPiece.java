@@ -56,6 +56,8 @@ public class SmartPiece {
 		case LEFT: co.y++; break;
 		}
 		
+		// 
+		
 	}
 	
 	public boolean isOffset() {

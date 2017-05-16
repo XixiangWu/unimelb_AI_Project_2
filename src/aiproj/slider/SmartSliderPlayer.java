@@ -20,6 +20,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	
 	@Override
 	public void init(int dimension, String board, char player) {
+		
 
 		System.out.println(" ======== next player ========");
 		timer = new CPUTimer();
@@ -45,14 +46,18 @@ public class SmartSliderPlayer implements SliderPlayer {
 	@Override
 	public void update(Move move) {
 		
-		// update board stored in bs
+		final char[] DRE = {'U', 'D', 'L', 'R'};
+		bs.board.update(move);
+			
+		List<Move> nextMoves = bs.board.generateMoves(bs.turn);
+		for (Move move1 : nextMoves) {
+			System.out.format("all moves%d,%d,%c\n",move1.i,move1.j,DRE[move1.d.ordinal()]);
+		}
+		//update board stored in bs
 		bs.board.update(move);
 		for (SmartPiece piece: bs.board.getVlist()){
 			System.out.format("piece:%d,%d\n",piece.i,piece.j);
 		}
-		
-		// update OSA algorithm
-		
 			
 	}
 
@@ -76,7 +81,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	      // Generate possible next moves in a List 
 	      List<Move> nextMoves = bs.board.generateMoves(player);
 	      //for (Move move : nextMoves) {
-	    	//  System.out.format("all%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
+	    	//  System.out.format("all moves%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
 	      //}
 	      ArrayList<Move> pastMoves = new ArrayList<Move>();
 	      
@@ -88,7 +93,8 @@ public class SmartSliderPlayer implements SliderPlayer {
 	 
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
-	         currentScore = evaluate();
+	    	  //currentScore = evaluate();
+	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
 		      //for (Move ss : pastMoves) {
 		    	//  System.out.format("past:%d,%d,%c\n",ss.i,ss.j,DRE[ss.d.ordinal()]);
@@ -98,7 +104,6 @@ public class SmartSliderPlayer implements SliderPlayer {
 	            // Try this move for the current "player"
 	        	 //System.out.format("moveby:%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
 				bs.board.update(move);
-	            //System.out.println(bs.board.toString());
 	            pastMoves.add(move);
 	            
 	            if (player == bs.turn) {  // my turn is maximizing player
