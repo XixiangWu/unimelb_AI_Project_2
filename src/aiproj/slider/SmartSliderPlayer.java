@@ -57,7 +57,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 		// TODO Auto-generated method stub
 		int[] result = minimax(3,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
 		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]));
-		//System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
+		System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
 
 		
@@ -69,11 +69,12 @@ public class SmartSliderPlayer implements SliderPlayer {
 		 final char[] DRE = {'U', 'D', 'L', 'R'};
 		 Move bestMove = new Move(100,100,Move.Direction.RIGHT);
 	      // Generate possible next moves in a List 
-	      List<Move> nextMoves = bs.board.generateMoves(player);
+	      ArrayList<Move> nextMoves = bs.board.generateMoves(player);
+	      
 	      //for (Move move : nextMoves) {
 	    	//  System.out.format("all moves%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
 	      //}
-	      ArrayList<Move> pastMoves = new ArrayList<Move>();
+	      //ArrayList<Move> pastMoves = new ArrayList<Move>();
 	      
 	      // myself is maximizing; while opp is minimizing
 	      
@@ -86,15 +87,21 @@ public class SmartSliderPlayer implements SliderPlayer {
 	    	  //currentScore = evaluate();
 	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
-		      //for (Move ss : pastMoves) {
-		    	//  System.out.format("past:%d,%d,%c\n",ss.i,ss.j,DRE[ss.d.ordinal()]);
-		      //}
+		      
 	      } else {
+	    	  
+	    	  //for (Move ss : nextMoves) {
+		    //	  System.out.format("all:%d,%d,%c\n",ss.i,ss.j,DRE[ss.d.ordinal()]);
+		      //}
 	         for (Move move : nextMoves) {
 	            // Try this move for the current "player"
-	        	 //System.out.format("moveby:%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
-				bs.board.update(move);
-	            pastMoves.add(move);
+	        	//System.out.format("moveby:%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
+	        	if(bs.board.canMove(move.i,move.j)){
+	        		bs.board.update(move);
+	        	}
+				
+				//System.out.println(bs.board.toString());
+	            //pastMoves.add(move);
 	            
 	            if (player == bs.turn) {  // my turn is maximizing player
 	               currentScore = minimax(depth - 1, opp, bs, alpha, beta)[0];

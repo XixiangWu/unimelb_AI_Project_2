@@ -319,8 +319,9 @@ public class Board {
 		
 	}
 	
-	  public List<Move> generateMoves(Piece turn) {
-		      List<Move> nextMoves = new ArrayList<Move>(); // allocate List
+	  public ArrayList<Move> generateMoves(Piece turn) {
+		      ArrayList<Move> nextMoves = new ArrayList<Move>(); // allocate List
+
 		      // If game over, i.e., no next move
 		      if (finished()) {
 		         return nextMoves;   // return empty list
@@ -348,7 +349,7 @@ public class Board {
 					}
 				}else{
 					for (SmartPiece slider:Vlist){
-						
+
 						i=slider.i;
 						j=slider.j;
 						if(grid[i][j]== turn){
@@ -365,6 +366,7 @@ public class Board {
 						}
 					}
 		      }
+
 		      return nextMoves;
 		   }
 	  public void update(Move move){
@@ -433,12 +435,17 @@ public class Board {
 			if (move.d == Move.Direction.RIGHT && toi == n) {
 				piece = Piece.HSLIDER;
 				hsliders++;
+				
+				
 				Hlist.add(new SmartPiece(move.i,move.j,Piece.HSLIDER));
 				
 			} else if (move.d == Move.Direction.UP && toj == n){
 				piece = Piece.VSLIDER;
 				vsliders++;
+				System.out.println(vsliders);
+				
 				Vlist.add(new SmartPiece(move.i,move.j,Piece.VSLIDER));
+				
 			}else{
 				piece = grid[toi][toj];
 				grid[toi][toj] = Piece.BLANK;
@@ -457,10 +464,13 @@ public class Board {
 	  
 	  public void updateList(ArrayList<SmartPiece> list,SmartPiece newPiece,SmartPiece oldPiece){
 		  Iterator<SmartPiece> iterator = list.iterator();
+		  
 		  while(iterator.hasNext()){
 			  SmartPiece piece = iterator.next();
 			  if(piece.i==oldPiece.i && piece.j==oldPiece.j){
+				  
 				  iterator.remove();
+				  
 			  }
 		  }
 		  if(newPiece != null){
