@@ -1,6 +1,7 @@
 package aiproj.slider.gameobject;
 
 public class Coordinate {
+	
 	public int x; 
 	public int y; 
 	  

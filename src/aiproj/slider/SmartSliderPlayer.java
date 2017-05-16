@@ -55,7 +55,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	public Move move() {
 		final char[] DRE = {'U', 'D', 'L', 'R'};
 		// TODO Auto-generated method stub
-		int[] result = minimax(4,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
+		int[] result = minimax(3,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
 		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]));
 		//System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
