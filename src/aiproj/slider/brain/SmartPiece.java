@@ -55,23 +55,6 @@ public class SmartPiece {
 		return totScore;
 	}
 	
-	/** Check if a move is in the OSA path, assume that the move is a valid move */
-	public boolean checkMoveOSA(Move move) {		
-		
-		switch (move.d) {
-		case UP:
-			for () {
-				
-			}
-			break;
-
-		default:
-			break;
-		}
-		
-		
-	}
-	
 	/** For debugging */
 //	public String toString() {
 //		
@@ -88,7 +71,4 @@ public class SmartPiece {
 //		
 //	}
 	
-	//======================================================================================
-	// other attributes
-	public static final float OSA_PATH_SCORE = 2.0f; 
 }
