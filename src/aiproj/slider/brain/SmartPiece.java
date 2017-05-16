@@ -56,21 +56,22 @@ public class SmartPiece {
 	}
 	
 	/** Check if a move is in the OSA path, assume that the move is a valid move */
-	public boolean checkMoveOSA(Move move) {		
+	public boolean checkMoveOSA(Move move) {
+		return false;		
 		
-		switch (move.d) {
-		case UP:
-			for () {
+	//	switch (move.d) {
+	//	case UP:
+	//		for () {
 				
-			}
-			break;
+	//		}
+	//		break;
 
-		default:
-			break;
+	//	default:
+	//		break;
 		}
 		
 		
-	}
+	//}
 	
 	/** For debugging */
 //	public String toString() {

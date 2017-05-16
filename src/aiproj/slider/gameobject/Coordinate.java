@@ -17,7 +17,6 @@ public class Coordinate {
 			return false;
 		}
 		
-		
 		if (this.x == co.x && this.y == co.y) {
 			return true;
 		}
