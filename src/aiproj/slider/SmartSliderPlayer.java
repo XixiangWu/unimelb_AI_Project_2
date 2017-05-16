@@ -1,30 +1,32 @@
 package aiproj.slider;
 import aiproj.slider.Move.Direction;
-import aiproj.slider.Referee.Piece;
 import aiproj.slider.brain.BrainState;
-import aiproj.slider.brain.SmartPiece;
+import aiproj.slider.brain.OptimizedSearchAlgorithm;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
 import aiproj.slider.exception.IllegalMoveException;
-import aiproj.slider.gameobject.Board;
 
 public class SmartSliderPlayer implements SliderPlayer {
 
 	private BrainState bs;
+	private OptimizedSearchAlgorithm osa;
 	
 	@Override
 	public void init(int dimension, String board, char player) {
-		
+
 		// Init: BrainState for storing all the information that need to be known by Algorithm
 		try {
 			
 			bs = new BrainState.BrainStateBuilder()
 					.setBoard(dimension, board)
 					.buildPieceList(player)
+					.buildOSA()
+					.buildSmartPieceByOSA()
 					.build();
 			
 		} catch (IllegalBrainStateInitialization e) {
 			e.printStackTrace();
 		}
+		
 		
 	}
 

@@ -84,7 +84,7 @@ public class Board {
 	
 	
 	/** represent a board as text for rendering */
-	private static final char[] SYMBOLS = {'+', 'B', 'H', 'V'};
+	public static final char[] SYMBOLS = {'+', 'B', 'H', 'V'};
 	public String toString(){
 		StringBuilder s = new StringBuilder(2 * n * n);
 		for (int j = n-1; j >= 0; j--) {
@@ -196,6 +196,25 @@ public class Board {
 			return false;
 		}
 	}
+	
+	public static boolean canMoveNewGrid(int i, int j, Piece[][] newGrid, int n) {
+		if (newGrid[i][j] == Piece.HSLIDER) {
+			// for HSLIDERs, check right, up, and down
+			return (i+1 == n) || (newGrid[i+1][j] == Piece.BLANK)
+				|| (j+1 < n && newGrid[i][j+1] == Piece.BLANK)
+				|| (j-1 >= 0 && newGrid[i][j-1] == Piece.BLANK);
+		
+		} else if (newGrid[i][j] == Piece.VSLIDER) {
+			// for VSLIDERs, check up, right, and left
+			return (j+1 == n) || (newGrid[i][j+1] == Piece.BLANK)
+				|| (i+1 < n && newGrid[i+1][j] == Piece.BLANK)
+				|| (i-1 >= 0 && newGrid[i-1][j] == Piece.BLANK);
+		
+		} else {
+			// any other square can't be moved
+			return false;
+		}
+	}
 
 	public boolean finished() {
 		return (hsliders == 0) || (vsliders == 0) || (passes > 1);
@@ -218,7 +237,7 @@ public class Board {
 	
 /****************************************************************/
 	
-	   // Methods created by ourself 
+	   // Methods created by ourselves
 	
 		// Another constructor to convert string to pieces configuration
 		public Board(int dimension,String board) {
@@ -233,12 +252,12 @@ public class Board {
 					switch(row.charAt(j)){
 					case 'H':
 						grid[j][i]=Piece.HSLIDER;
-						Hlist.add(new SmartPiece(i,j,Piece.HSLIDER));
+						Hlist.add(new SmartPiece(j,i,Piece.HSLIDER));
 						hsliders++;
 						break;
 					case 'V':
 						grid[j][i]=Piece.VSLIDER;
-						Vlist.add(new SmartPiece(i,j,Piece.VSLIDER));
+						Vlist.add(new SmartPiece(j,i,Piece.VSLIDER));
 						vsliders++;
 						break;
 					case '+':

@@ -13,9 +13,14 @@ public class SmartPiece {
 	public int j;
 	public Coordinate co;
 	public Piece turn;
+	
 	// Derived attributes
-	public ArrayList<Coordinate> shortestPathToWin;
-	public int noShortestSteps;
+	public ArrayList<Coordinate> pathOSA;
+	public int noShortestOSA;
+	public int wasteStep = 0;
+	
+	// 
+	
 	
 	/** Smart piece stores all the information that should be known by algorithm and derived attributes for further calculation */
 	public SmartPiece(int i, int j, Piece turn) {
@@ -26,12 +31,18 @@ public class SmartPiece {
 	}
 	
 	/** For analysing all the information in piece */
-	public void setup(Board board) {
-		// find the shortest path
-		calcShortestPath(board);
+	public void setup(ArrayList<Coordinate> pathOSA) {
+		
+		pathOSA = new ArrayList<Coordinate>();
+		this.pathOSA = pathOSA;
+		noShortestOSA = pathOSA.size();
+		
 	}
 	
-	public void calcShortestPath(Board board) {
+	/** This is a method used for evaluating a possible shortest path from current position to goal edge. 
+	 * This function will generally ignore the piece which is not a BLOCK even if it blocks the path to goal
+	 * edge at present */
+	public void evalPossiblePath(Board board) {
 		
 	}
 	

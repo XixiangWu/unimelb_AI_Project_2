@@ -17,4 +17,18 @@ public class Coordinate {
 		}
 		return false;
 	}
+	
+	/** matrix transformation when the coordinate should be transformed in further implement*/
+	public void transform() {
+		int temp = x;
+		x = y;
+		y = temp;
+	}
+	
+	/** To String*/
+	public String toString() {
+		
+		return String.format("[x: %d | y: %d], ", x,y);
+	}
+	
 } 

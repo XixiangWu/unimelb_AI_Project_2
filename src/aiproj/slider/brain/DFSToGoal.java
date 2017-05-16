@@ -3,13 +3,12 @@ import java.util.ArrayList;
 
 import aiproj.slider.Move.Direction;
 import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.OptimizedSearchAlgorithm.EDGE;
+import aiproj.slider.brain.OptimizedSearchAlgorithm.GOAL;
 import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
 
 public class DFSToGoal {
-
-	public static enum GOAL {SHORTEST_PATH}
-	public static enum EDGE {UP, DOWN, LEFT, RIGHT}; 
 	
 	private int n;                 // dimension of grid
     private boolean[][] visited;
