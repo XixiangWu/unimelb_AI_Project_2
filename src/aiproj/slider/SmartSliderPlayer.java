@@ -1,8 +1,12 @@
 package aiproj.slider;
+import java.util.ArrayList;
+
 import aiproj.slider.Move.Direction;
 import aiproj.slider.brain.BrainState;
+import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
 import aiproj.slider.exception.IllegalMoveException;
+import aiproj.slider.gameobject.Coordinate;
 
 public class SmartSliderPlayer implements SliderPlayer {
 

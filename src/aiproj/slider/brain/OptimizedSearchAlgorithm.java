@@ -6,6 +6,7 @@ import aiproj.slider.Move.Direction;
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
+import sun.tools.jar.resources.jar;
 
 public class OptimizedSearchAlgorithm {
 
@@ -42,7 +43,7 @@ public class OptimizedSearchAlgorithm {
 		
 		needTransform = (p.turn == Piece.VSLIDER) ? true : false;
 		
-		System.out.println("===========OSA=============");
+//		System.out.println("===========OSA=============");
 
 		// INIT: Abort flag: means no move can be determined
 		boolean shouldAbort = false;
@@ -54,18 +55,15 @@ public class OptimizedSearchAlgorithm {
 		Coordinate tempCoor = (needTransform) ? new Coordinate(p.j, p.i) : new Coordinate(p.i, p.j);
 		
 		// INIT: optimizedPathTable
-		ArrayList<ArrayList<Coordinate>> optimziedPathTable = new ArrayList<ArrayList<Coordinate>>();
+		ArrayList<ArrayList<Coordinate>> optimizedPathTable = new ArrayList<ArrayList<Coordinate>>();
 		
-		// INIT: a coordinate path d
-		ArrayList<Coordinate> optimzedPath = new ArrayList<Coordinate>();
 		
 		// INIT: Transform the board, after this line, all the moves are considered from left to right.
 		Piece[][] grid = (needTransform) ? boardTransformation(board.getGrid(), board.getN()) : board.getGrid();
 		
-		System.out.println("");
-		
 		// INIT: keep tracing the turning point in OSA, find all shortest possibilities
 		ArrayList<Coordinate> turningPointList = new ArrayList<Coordinate>();
+		ArrayList<Coordinate> turningPointListCopy = new ArrayList<Coordinate>();
 		
 		// Move priority: [RIGHT](APPROACH_GOAL) > [UP > DOWN](TURN) | 
 		DIRECTION_MANIPULATION[] dirSeq = {DIRECTION_MANIPULATION.APPROACH_GOAL, DIRECTION_MANIPULATION.TURN};
@@ -73,6 +71,9 @@ public class OptimizedSearchAlgorithm {
 		// traking the turning point | Move DOWN then UP
 		while ((!didStart) || (turningPointList.size()!=0)) {
 		
+			// INIT: a coordinate path d
+			ArrayList<Coordinate> optimizedPath = new ArrayList<Coordinate>();
+			
 			didStart = true;
 			
 			Coordinate tempTurningPoint = null;
@@ -93,7 +94,7 @@ public class OptimizedSearchAlgorithm {
 						if (grid[tempCoor.x+1][tempCoor.y] != Piece.BLOCK){
 							// if the next right cell is not block, just move!
 							tempCoor.x++;
-							optimzedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+							optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
 							break;
 						}
 						
@@ -101,13 +102,13 @@ public class OptimizedSearchAlgorithm {
 						if (tempCoor.y+1==n) { // reach the top edge
 							if (grid[tempCoor.x][tempCoor.y-1] != Piece.BLOCK) {
 								tempCoor.y--;
-								optimzedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+								optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
 								break;
 							}
 						} else if (tempCoor.y-1<0) {// reach the bottom edge
 							if (grid[tempCoor.x][tempCoor.y+1] != Piece.BLOCK) {
 								tempCoor.y++;
-								optimzedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+								optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
 								break;
 							}
 						}
@@ -116,14 +117,14 @@ public class OptimizedSearchAlgorithm {
 						if (grid[tempCoor.x][tempCoor.y+1] == Piece.BLOCK) { // Top is blocked
 							if (grid[tempCoor.x][tempCoor.y-1] != Piece.BLOCK) {
 								tempCoor.y--;
-								optimzedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+								optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
 								break;
 							}
 						}
 						if (grid[tempCoor.x][tempCoor.y-1] == Piece.BLOCK) { // Top is blocked
 							if (grid[tempCoor.x][tempCoor.y+1] != Piece.BLOCK) {
 								tempCoor.y++;
-								optimzedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+								optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
 								break;
 							}
 						}
@@ -147,11 +148,13 @@ public class OptimizedSearchAlgorithm {
 							
 							if (tempDir == Direction.UP) {
 								tempCoor.y++;
-								optimzedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+								optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+//								turningPointListCopy.add(new Coordinate(tempCoor.x, tempCoor.y));
 								break;
 							} else {
 								tempCoor.y--;
-								optimzedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+								optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+//								turningPointListCopy.add(new Coordinate(tempCoor.x, tempCoor.y));
 								break;
 							}
 							
@@ -162,9 +165,10 @@ public class OptimizedSearchAlgorithm {
 								tempCoor.y++;
 							} else {
 								turningPointList.add(new Coordinate(tempCoor.x, tempCoor.y));
+								turningPointListCopy.add(new Coordinate(tempCoor.x, tempCoor.y));
 								tempCoor.y--;
 							}
-							optimzedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
+							optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
 
 						}
 						
@@ -177,20 +181,124 @@ public class OptimizedSearchAlgorithm {
 				osaStateMap.put(p, OSA_STATE.FINISHED);
 			}
 			
-			for (Coordinate c:optimzedPath) {
-				System.out.print(c.toString());
-			}
-			System.out.println();
+//			System.out.print("optimezed Path: ");
+//			for (Coordinate c:optimizedPath) {
+//				System.out.print(c.toString());
+//			}
+			
+//			System.out.println();
+			
+			optimizedPathTable.add(optimizedPath);
+			
+//			// calc other derived path
+//			if (turningPointListCopy.size() != 0) {
+//				addEquivalentPathToTable(
+//						optimizedPathTable, 
+//						turningPointListCopy, 
+//						p.co
+//						);
+//				turningPointListCopy.remove(0);
+//			}
 			
 			// Clean all the elements 
-			optimziedPathTable.add(optimzedPath);
-			optimzedPath.clear();
 			tempCoor = (needTransform) ? new Coordinate(p.j, p.i) : new Coordinate(p.i, p.j);
 			shouldAbort = false;
 			
 		}
+		// calc other derived path
+		if (turningPointListCopy.size() == 1) {
+			addEquivalentPathToTable(
+					optimizedPathTable, 
+					turningPointListCopy, 
+					p.co
+					);
+			turningPointListCopy.remove(0);
+		}
 		
-		return optimziedPathTable;
+		return optimizedPathTable;
+	}
+	
+	private void addEquivalentPathToTable(ArrayList<ArrayList<Coordinate>> optimizedPathTable, ArrayList<Coordinate> turningPointList, Coordinate co) {
+		
+		// In the situation when a turning point appears, some alternative path can be derived, for instance:
+		//		
+		//     ^ - >  - >  - > 
+		//	   |
+		// H - >	 B
+		//
+		// is equal to
+		//
+		// ^ - > - >  - >
+		// |
+		// H	     B
+		//
+		
+		ArrayList<ArrayList<Coordinate>> tempPathTable = new ArrayList<ArrayList<Coordinate>>();
+		
+		if (turningPointList.size() > 1) {
+			// To many situation, abort!
+			return;
+		}
+		
+//		System.out.println("=== Derived === ");
+		for (ArrayList<Coordinate> optimizedPath: optimizedPathTable) {
+			
+			int dir_x, dir_y, times = 0, tpIndex;
+			
+			Coordinate tempTp = (needTransform) ? new Coordinate(turningPointList.get(0).y, turningPointList.get(0).x) 
+												: turningPointList.get(0);
+						
+			if (!needTransform) {
+				dir_x = -1;
+				dir_y = optimizedPath.get(optimizedPath.size()-1).y - tempTp.y;
+				times = tempTp.x - co.x;
+				tpIndex = tempTp.x - 1;
+			} else {
+				dir_x = optimizedPath.get(optimizedPath.size()-1).x - tempTp.x;
+				dir_y = -1;
+				times = tempTp.y - co.y;
+				tpIndex = tempTp.y - 1;
+			}
+			
+			if (dir_x == 0 || dir_y == 0) {
+				break;
+			}
+			
+			for (int j = 0; j < times; j++) {
+				
+				ArrayList<Coordinate> tempDerivedPath = new ArrayList<Coordinate>();
+				
+				for (int i = 0; i < optimizedPath.size(); i++) {
+				
+					if (i >= tpIndex-j && i <= tpIndex) { // if it is the coordinate that needs to be modified
+						tempDerivedPath.add(i, new Coordinate(dir_x+ optimizedPath.get(i).x,
+								  							  dir_y+ optimizedPath.get(i).y));
+					} else {
+						tempDerivedPath.add(i, optimizedPath.get(i));
+					}
+					
+				}
+				
+				tempPathTable.add(tempDerivedPath);
+			}
+
+		}
+		
+		for (ArrayList<Coordinate> tempPath: tempPathTable) {
+			
+//			System.out.print("derived path: ");
+//			for (Coordinate c:tempPath) {
+//				System.out.print(c.toString());
+//			}
+//			System.out.println();
+			
+			optimizedPathTable.add(tempPath);
+		}
+		
+//		System.out.println("=== Derived Finished ===");
+
+		
+		
 	}
 	
 	/** This method takes target piece and return the "shortest" path to block the smart piece */

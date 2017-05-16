@@ -197,24 +197,6 @@ public class Board {
 		}
 	}
 	
-	public static boolean canMoveNewGrid(int i, int j, Piece[][] newGrid, int n) {
-		if (newGrid[i][j] == Piece.HSLIDER) {
-			// for HSLIDERs, check right, up, and down
-			return (i+1 == n) || (newGrid[i+1][j] == Piece.BLANK)
-				|| (j+1 < n && newGrid[i][j+1] == Piece.BLANK)
-				|| (j-1 >= 0 && newGrid[i][j-1] == Piece.BLANK);
-		
-		} else if (newGrid[i][j] == Piece.VSLIDER) {
-			// for VSLIDERs, check up, right, and left
-			return (j+1 == n) || (newGrid[i][j+1] == Piece.BLANK)
-				|| (i+1 < n && newGrid[i+1][j] == Piece.BLANK)
-				|| (i-1 >= 0 && newGrid[i-1][j] == Piece.BLANK);
-		
-		} else {
-			// any other square can't be moved
-			return false;
-		}
-	}
 
 	public boolean finished() {
 		return (hsliders == 0) || (vsliders == 0) || (passes > 1);

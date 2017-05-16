@@ -34,7 +34,7 @@ public class Coordinate {
 	/** To String*/
 	public String toString() {
 		
-		return String.format("[x: %d | y: %d], ", x,y);
+		return String.format("[x: %d | y: %d]", x,y);
 	}
 	
 } 

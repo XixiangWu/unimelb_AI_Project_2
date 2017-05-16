@@ -30,25 +30,55 @@ public class SmartPiece {
 	
 	/** This is a method used for evaluating several possible short path from current position to goal edge. This function will 
 	 * generally ignore the piece which is not a BLOCK.*/
-	public void setup(ArrayList<ArrayList<Coordinate>> pathOSA) {
+	public void setup(ArrayList<ArrayList<Coordinate>> pathTableOSA) {
 		
-		pathOSA = new ArrayList<ArrayList<Coordinate>>();
-		this.pathTableOSA= pathOSA;
-		noShortestOSA = pathOSA.size();
+		this.pathTableOSA = new ArrayList<ArrayList<Coordinate>>();
+		this.pathTableOSA= pathTableOSA;
+		noShortestOSA = pathTableOSA.size();
+		
+//		System.out.println(i+" "+j);
+//		for (ArrayList<Coordinate> coList : pathTableOSA) {
+//			for (Coordinate co: coList) {
+//				System.out.println(co.toString());
+//			}
+//			System.out.println();
+//		}
 		
 	}
 	
-	/** Evaluation of all the score obatained by SmartPiece*/
-	public float Eval(Move move) {
+	/** Evaluation of all the scores obtained by SmartPiece*/
+	public float Eval(Move[] move) {
 		
 		// INIT: a float score
 		float totScore = 0.0f;
 		
-		// Step 1: 
-		
-		
-		
 		return totScore;
 	}
 	
+	/** Check if a move is in the OSA path, assume that the move is a valid move */
+	public boolean checkMoveOSA(Move move) {		
+		
+		
+		
+	}
+	
+	/** For debugging */
+//	public String toString() {
+//		
+//		String message = "";
+//		
+//		for (ArrayList<Coordinate> coList : pathTableOSA) {
+//			for (Coordinate co: coList) {
+//				message+=(co.toString());
+//			}
+//			message+="\n";
+//		}
+//		
+//		return String.format("-------------------\n| x: %d y: %d | Smart Piece | Ideal moving path: \n%s", i,j,message);
+//		
+//	}
+	
+	//======================================================================================
+	// other attributes
+	public static final float OSA_PATH_SCORE = 2.0f; 
 }
