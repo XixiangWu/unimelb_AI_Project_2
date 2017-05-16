@@ -1,9 +1,12 @@
 package aiproj.slider;
+import java.util.ArrayList;
 import java.util.List;
 
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.brain.BrainState;
+import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
+import aiproj.slider.exception.IllegalMoveException;
 import aiproj.slider.gameobject.Board;
 
 public class SmartSliderPlayer implements SliderPlayer {
@@ -12,67 +15,93 @@ public class SmartSliderPlayer implements SliderPlayer {
 	
 	@Override
 	public void init(int dimension, String board, char player) {
-		
 		try {
 			bs = new BrainState.BrainStateBuilder().setBoard(dimension, board).buildPieceList(player).build();
 		} catch (IllegalBrainStateInitialization e) {
 			e.printStackTrace();
 		}
-	
 	}
 
 	@Override
 	public void update(Move move) {
-		
+			bs.board.update(move);
+			for (SmartPiece piece: bs.board.getVlist()){
+				System.out.format("piece:%d,%d\n",piece.i,piece.j);
+			}
+			
 	}
 
-	@Override
+
 	public Move move() {
+		final char[] DRE = {'U', 'D', 'L', 'R'};
 		// TODO Auto-generated method stub
+		int[] result = minimax(4,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
+		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]));
+		//System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
+		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
+
 		
-		
-		
-		
-		return new Move(0,2,Move.Direction.UP);
 	}
 	
 	
-	
-	private int[] minimax(int depth, Piece player,BrainState bs) {
+	 
+	private int[] minimax(int depth, Piece player,BrainState bs,int alpha, int beta) {
+		 final char[] DRE = {'U', 'D', 'L', 'R'};
+		 Move bestMove = new Move(100,100,Move.Direction.RIGHT);
 	      // Generate possible next moves in a List 
 	      List<Move> nextMoves = bs.board.generateMoves(player);
-	 
+	      //for (Move move : nextMoves) {
+	    	//  System.out.format("all%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
+	      //}
+	      ArrayList<Move> pastMoves = new ArrayList<Move>();
+	      
 	      // myself is maximizing; while opp is minimizing
-	      int bestScore = (player == bs.turn) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+	      
 	      Piece opp = (bs.turn == Piece.HSLIDER) ? Piece.VSLIDER : Piece.HSLIDER;
 	      int currentScore;
-	      Move bestMove = new Move(0,0,Move.Direction.UP);
+	      
 	 
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
-	         bestScore = BEA(bs.board,bestMove);
+	         currentScore = evaluate();
+	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
+		      //for (Move ss : pastMoves) {
+		    	//  System.out.format("past:%d,%d,%c\n",ss.i,ss.j,DRE[ss.d.ordinal()]);
+		      //}
 	      } else {
 	         for (Move move : nextMoves) {
 	            // Try this move for the current "player"
-	            bs.board.move(move, player);
-	            if (player == bs.turn) {  // mySeed (computer) is maximizing player
-	               currentScore = minimax(depth - 1, opp,bs)[0];
-	               if (currentScore > bestScore) {
-	                  bestScore = currentScore;
+	        	 //System.out.format("moveby:%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
+				bs.board.update(move);
+	            //System.out.println(bs.board.toString());
+	            pastMoves.add(move);
+	            
+	            if (player == bs.turn) {  // my turn is maximizing player
+	               currentScore = minimax(depth - 1, opp, bs, alpha, beta)[0];
+	               if (currentScore > alpha) {
+	                  alpha = currentScore;
 	                  bestMove = move;
+	                 
 	               }
 	            } else {  // opp is minimizing player
-	               currentScore = minimax(depth - 1, player,bs)[0];
-	               if (currentScore < bestScore) {
-	                  bestScore = currentScore;
+	               currentScore = minimax(depth - 1, player,bs, alpha, beta)[0];
+	               if (currentScore < beta) {
+	                  beta = currentScore;
 	                  bestMove = move;
 	               }
 	            }
+	            
 	            // Undo move
 	            bs.board.undoMove(move);
+	            if (alpha >= beta) break;
 	         }
+	         return new int[] {(player == bs.turn) ? alpha : beta, bestMove.i,bestMove.j,bestMove.d.ordinal()};
 	      }
-	      return new int[] {bestScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
+	      
 	   }
+	public int evaluate(){
+		return (int)(Math.random()*100);
+		
+	}
 
 }

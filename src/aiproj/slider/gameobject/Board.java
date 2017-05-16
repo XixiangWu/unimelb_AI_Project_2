@@ -1,6 +1,8 @@
 package aiproj.slider.gameobject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,7 +20,7 @@ public class Board {
 	public static java.util.Random rng = new java.util.Random();
 
 	private Piece[][] grid;
-	private int hsliders = 0, vsliders = 0, passes = 0;
+	public int hsliders = 0, vsliders = 0, passes = 0;
 	private final int n;
 	private ArrayList<SmartPiece> Vlist=new ArrayList<SmartPiece>();
 	private ArrayList<SmartPiece> Hlist=new ArrayList<SmartPiece>();
@@ -234,12 +236,12 @@ public class Board {
 					switch(row.charAt(j)){
 					case 'H':
 						grid[j][i]=Piece.HSLIDER;
-						Hlist.add(new SmartPiece(i,j,Piece.HSLIDER));
+						Hlist.add(new SmartPiece(j,i,Piece.HSLIDER));
 						hsliders++;
 						break;
 					case 'V':
 						grid[j][i]=Piece.VSLIDER;
-						Vlist.add(new SmartPiece(i,j,Piece.VSLIDER));
+						Vlist.add(new SmartPiece(j,i,Piece.VSLIDER));
 						vsliders++;
 						break;
 					case '+':
@@ -318,7 +320,6 @@ public class Board {
 	
 	  public List<Move> generateMoves(Piece turn) {
 		      List<Move> nextMoves = new ArrayList<Move>(); // allocate List
-		 
 		      // If game over, i.e., no next move
 		      if (finished()) {
 		         return nextMoves;   // return empty list
@@ -327,34 +328,142 @@ public class Board {
 		      // Search for valid moves and add to the List
 				int i,j;
 				if(turn == Piece.HSLIDER){
+					
 					for (SmartPiece slider:Hlist){
 						i=slider.i;
 						j=slider.j;
-						if(grid[i+1][j] == Piece.BLANK){
-							nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
-						}else if(j+1 < n && grid[i][j+1] == Piece.BLANK){
-							nextMoves.add(new Move(i,j,Move.Direction.UP));
-						}else if(j-1 >= 0 && grid[i][j-1] == Piece.BLANK){
-							nextMoves.add(new Move(i,j,Move.Direction.DOWN));
+						if(grid[i][j]== turn){
+							if((i+1 < n && grid[i+1][j] == Piece.BLANK) || (i+1 == n)){
+								nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
+							}
+							if(j+1 < n && grid[i][j+1] == Piece.BLANK){
+								nextMoves.add(new Move(i,j,Move.Direction.UP));
+							}
+							if(j-1 >= 0 && grid[i][j-1] == Piece.BLANK){
+								nextMoves.add(new Move(i,j,Move.Direction.DOWN));
+							}
 						}
 						
 					}
 				}else{
 					for (SmartPiece slider:Vlist){
+						
 						i=slider.i;
 						j=slider.j;
-						if(grid[i][j+1] == Piece.BLANK){
-							nextMoves.add(new Move(i,j,Move.Direction.UP));
-						}else if(i+1 < n && grid[i+1][j] == Piece.BLANK){
-							nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
-						}else if(i-1 >= 0 && grid[i-1][j] == Piece.BLANK){
-							nextMoves.add(new Move(i,j,Move.Direction.LEFT));
+						if(grid[i][j]== turn){
+							if((j+1 < n && grid[i][j+1] == Piece.BLANK )||(j+1 == n)){
+								
+								nextMoves.add(new Move(i,j,Move.Direction.UP));
+							}
+							if(i+1 < n && grid[i+1][j] == Piece.BLANK){
+								nextMoves.add(new Move(i,j,Move.Direction.RIGHT));
+							}
+							if(i-1 >= 0 && grid[i-1][j] == Piece.BLANK){
+								nextMoves.add(new Move(i,j,Move.Direction.LEFT));
+							}
 						}
 					}
 		      }
 		      return nextMoves;
 		   }
+	  public void update(Move move){
+		  Piece piece;
+
+		// null move
+			if (move == null) {
+				return;
+				}
+			
+			piece = grid[move.i][move.j];
+			// where's the next space?
+			int toi = move.i, toj = move.j;
+			switch(move.d){
+				case UP:	toj++; break;
+				case DOWN:	toj--; break;
+				case RIGHT:	toi++; break;
+				case LEFT:	toi--; break;
+			}
+			
+
+			// If a piece off the board?
+			if (piece == Piece.HSLIDER && toi == n) {
+				grid[move.i][move.j] = Piece.BLANK;
+				hsliders--;
+				Hlist.remove(new SmartPiece(move.i,move.j,Piece.HSLIDER));
+				return;
+
+			} else if (piece == Piece.VSLIDER && toj == n){
+				grid[move.i][move.j] = Piece.BLANK;
+				vsliders--;
+				Vlist.remove(new SmartPiece(move.i,move.j,Piece.VSLIDER));
+				
+				return;
+			}
+			else{
+				grid[move.i][move.j]=Piece.BLANK;
+				grid[toi][toj] = piece;
+				if(piece == Piece.HSLIDER){	
+					
+					updateList(Hlist,new SmartPiece(toi,toj,piece),new SmartPiece(move.i,move.j,piece));
+				}else{
+					updateList(Vlist,new SmartPiece(toi,toj,piece),new SmartPiece(move.i,move.j,piece));
+				}
+			}
+			return;
+	  }
 	  public void undoMove(Move move){
-		  
+		  Piece piece;
+		// null move
+			if (move == null) {
+				return;
+				}
+			
+			// where's the next space?
+			int toi = move.i, toj = move.j;
+			switch(move.d){
+				case UP:	toj++; break;
+				case DOWN:	toj--; break;
+				case RIGHT:	toi++; break;
+				case LEFT:	toi--; break;
+			}
+			
+
+			// If a piece off the board?
+			if (move.d == Move.Direction.RIGHT && toi == n) {
+				piece = Piece.HSLIDER;
+				hsliders++;
+				Hlist.add(new SmartPiece(move.i,move.j,Piece.HSLIDER));
+				
+			} else if (move.d == Move.Direction.UP && toj == n){
+				piece = Piece.VSLIDER;
+				vsliders++;
+				Vlist.add(new SmartPiece(move.i,move.j,Piece.VSLIDER));
+			}else{
+				piece = grid[toi][toj];
+				grid[toi][toj] = Piece.BLANK;
+				if(piece == Piece.HSLIDER){
+					updateList(Hlist,new SmartPiece(move.i,move.j,piece),new SmartPiece(toi,toj,piece));		
+				}else{
+					updateList(Vlist,new SmartPiece(move.i,move.j,piece),new SmartPiece(toi,toj,piece));
+				}
+			}
+
+			// no? all good? alright, let's make the move!
+			grid[move.i][move.j] = piece;
+
+			return;
+	  }
+	  
+	  public void updateList(ArrayList<SmartPiece> list,SmartPiece newPiece,SmartPiece oldPiece){
+		  Iterator<SmartPiece> iterator = list.iterator();
+		  while(iterator.hasNext()){
+			  SmartPiece piece = iterator.next();
+			  if(piece.i==oldPiece.i && piece.j==oldPiece.j){
+				  iterator.remove();
+			  }
+		  }
+		  if(newPiece != null){
+		  list.add(newPiece);
+		  }
 	  }
 }
