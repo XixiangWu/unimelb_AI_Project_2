@@ -58,15 +58,15 @@ public class SmartSliderPlayer implements SliderPlayer {
 	public Move move() {
 		final char[] DRE = {'U', 'D', 'L', 'R'};
 		// TODO Auto-generated method stub
-		System.out.println("Before MINI");
-		System.out.println(bs.board.toString());
-		int[] result = minimax(6,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
-		System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
-		System.out.println("Before update");
-		System.out.println(bs.board.toString());
+//		System.out.println("Before MINI");
+//		System.out.println(bs.board.toString());
+		int[] result = minimax(8,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
+//		System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
+//		System.out.println("Before update");
+//		System.out.println(bs.board.toString());
 		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]));
-		System.out.println("After update");
-		System.out.println(bs.board.toString());
+//		System.out.println("After update");
+//		System.out.println(bs.board.toString());
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
 
 		

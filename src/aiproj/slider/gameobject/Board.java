@@ -393,7 +393,6 @@ public class Board {
 			}
 			
 
-			// If a piece off the board?
 			if (piece == Piece.HSLIDER && toi == n) {
 				grid[move.i][move.j] = Piece.BLANK;
 				hsliders--;
