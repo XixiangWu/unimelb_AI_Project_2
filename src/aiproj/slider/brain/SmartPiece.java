@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.OptimizedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.gameobject.Coordinate;
 
 public class SmartPiece {
@@ -12,16 +13,21 @@ public class SmartPiece {
 	// Foundation attributes
 	public Coordinate co;
 	public Piece turn;
+	public Boolean isOffEdge;
 	
 	// Derived attributes
 	public ArrayList<ArrayList<Coordinate>> pathTableOSA;
 	public int noShortestOSA;
 	public int wasteStep = 0;
+	public OSA_STATE osaState;
+	
 	
 	/** Smart piece stores all the information that should be known by algorithm and derived attributes for further calculation */
 	public SmartPiece(int i, int j, Piece turn) {
 		this.co = new Coordinate(i, j); // used for further calculation
 		this.turn = turn;
+		osaState = OSA_STATE.NEED_RECALC;
+		isOffEdge = false;
 	}
 	
 	/** This is a method used for evaluating several possible short path from current position to goal edge. This function will 
@@ -78,6 +84,8 @@ public class SmartPiece {
 			pathTableOSA.add(newShortestPath);
 			
 		} else { // if it is off the path
+			
+			
 			
 		}
 		

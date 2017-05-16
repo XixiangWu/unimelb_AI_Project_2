@@ -102,7 +102,7 @@ public class BoardEvaluateAlgorithm {
 		}
 		
 		
-		return 0.0f;
+		return -OSA_PATH_SCORE*(float)Math.pow(((double)DECREMENT_OSA_PATH),index);
 	}
 	
 	/** Determine if the move */
