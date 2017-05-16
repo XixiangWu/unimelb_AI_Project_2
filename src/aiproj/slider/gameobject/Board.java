@@ -473,15 +473,10 @@ public class Board {
 		  
 		  while(iterator.hasNext()){
 			  SmartPiece piece = iterator.next();
-<<<<<<< HEAD
-			  if(piece.i==i && piece.j==j){
+			  if(piece.co.x==i && piece.co.y==j){
 				  
-				 piece.i=toi;
-				 piece.j = toj;
-=======
-			  if(piece.co.x==oldPiece.co.x && piece.co.y==oldPiece.co.y){
-				  iterator.remove();
->>>>>>> origin/master
+				 piece.co.x=toi;
+				 piece.co.y = toj;
 			  }
 		  }
 	  }

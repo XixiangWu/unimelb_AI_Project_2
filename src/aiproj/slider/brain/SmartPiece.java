@@ -21,7 +21,6 @@ public class SmartPiece {
 	public int wasteStep = 0;
 	public OSA_STATE osaState;
 	
-	
 	/** Smart piece stores all the information that should be known by algorithm and derived attributes for further calculation */
 	public SmartPiece(int i, int j, Piece turn) {
 		this.co = new Coordinate(i, j); // used for further calculation
@@ -45,6 +44,12 @@ public class SmartPiece {
 //			}
 //			System.out.println();
 //		}
+	}
+	
+	public void osaResetup(OptimizedSearchAlgorithm osa) {
+		if (osaState == OSA_STATE.NEED_RECALC) {
+			pathTableOSA = osa.OptimizedSearchAlgorithmEdge(this);
+		}
 	}
 	
 	public void update(Direction d) {
@@ -71,7 +76,6 @@ public class SmartPiece {
 							newShortestPath.add(tempCo);
 						}
 					}
-					
 					break;
 				}
 			}
