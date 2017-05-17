@@ -74,9 +74,6 @@ public class SmartSliderPlayer implements SliderPlayer {
 				if (sp.osaState == OSA_STATE.NEED_RECALC) {
 					sp.osaResetup(bs.osa);
 				}
-				
-
-			
 			}
 		}
 		
@@ -151,7 +148,6 @@ public class SmartSliderPlayer implements SliderPlayer {
 	        		bs.board.update(move,true);
 	        	}
 	        	
-	            
 	            if (player == bs.turn) {  // my turn is maximizing player
 	               currentScore = minimax(depth - 1, opp, bs, alpha, beta)[0];
 	               if (currentScore > alpha) {

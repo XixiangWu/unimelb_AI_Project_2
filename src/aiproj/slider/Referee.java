@@ -65,7 +65,7 @@ public class Referee {
 		String message = null;
 		
 		render(board);
-
+		
 		// game loop
 		while (!board.finished()) {
 
@@ -145,7 +145,7 @@ public class Referee {
 			if (args.length > 3) {
 				this.delay = Integer.parseInt(args[3]);
 			} else {
-				this.delay = 0; // default to zero (which will be ignored)
+				this.delay = 500; // default to zero (which will be ignored)
 			}
 
 			// check dimension of board
