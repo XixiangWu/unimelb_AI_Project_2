@@ -47,7 +47,7 @@ public class SmartPiece {
 	}
 	
 	public void osaResetup(OptimizedSearchAlgorithm osa) {
-		if (osaState == OSA_STATE.NEED_RECALC) {
+		if (osaState != OSA_STATE.FINISHED) {
 			pathTableOSA = osa.OptimizedSearchAlgorithmEdge(this);
 		}
 	}
@@ -64,41 +64,52 @@ public class SmartPiece {
 		
 		// check if the piece is still on the original shortest path 
 		boolean isFound = false;
-		ArrayList<Coordinate> newShortestPath = new ArrayList<Coordinate>();
+		ArrayList<ArrayList<Coordinate>> newShortestPathTable = new ArrayList<ArrayList<Coordinate>>();
+		Coordinate tempFlagCoor = null;
 		
 		for (ArrayList<Coordinate> coList : pathTableOSA) {
-			for (Coordinate co: coList) {
-				if (co.x == this.co.x && co.y == this.co.y) {
-					isFound = true;
+			
+			ArrayList<Coordinate> tempCoorList = new ArrayList<Coordinate>();
+			
+			if (!isFound) {
+				for (Coordinate co: coList) {
+					if (co.x == this.co.x && co.y == this.co.y) {
 					
-					if (pathTableOSA.size() > 1) {
+						// found a match
+						isFound = true;
+					
+						// record this coordinate
+						tempFlagCoor = co;
+					
+						ArrayList<Coordinate> tempCoorListInner = new ArrayList<Coordinate>();
+						
 						for (Coordinate tempCo: coList) {
-							newShortestPath.add(tempCo);
-						}
+							tempCoorListInner.add(tempCo);
+						}						
+						newShortestPathTable.add(tempCoorListInner);
 					}
-					break;
+				} 
+			} else if (isFound && tempCoorList.contains(tempFlagCoor)) {
+				for (Coordinate tempCo: coList) {
+					tempCoorList.add(tempCo);
 				}
+				newShortestPathTable.add(tempCoorList);
 			}
+			
+			
 		}
 		
 		// if it is still on the path
 		if (isFound) {
 			// delete every thing else in table and leave only this path
-			pathTableOSA.clear();
-			pathTableOSA.add(newShortestPath);
+			pathTableOSA = newShortestPathTable;
 			
 		} else { // if it is off the path
-			
-			
-			
+			wasteStep++;
+			osaState = OSA_STATE.NEED_RECALC;
 		}
 		
 	}
-	
-	//public boolean isOffThePath() {
-		
-	//}
-	
 	
 	/** Evaluation of all the scores obtained by SmartPiece*/
 	public float Eval(Move[] move) {

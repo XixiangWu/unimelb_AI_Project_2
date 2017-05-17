@@ -51,7 +51,9 @@ public class SmartSliderPlayer implements SliderPlayer {
 		for (SmartPiece piece: bs.board.getVlist()){
 			System.out.format("piece:%d,%d\n",piece.co.x,piece.co.y);
 		}
-			
+		
+		// TODO: Retrieve SmartPiece and recalc OSA
+		
 	}
 
 
@@ -93,7 +95,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	 
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
-	    	  //currentScore = evaluate();
+	    	 currentScore = evaluate();
 	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
 		      
