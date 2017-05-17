@@ -106,7 +106,6 @@ public class BoardEvaluateAlgorithm {
 			// Step 2.3: penalty for piece already has wasting move
 			overAllScore += wastePenalty(sp,moveLst.get(i).d);
 
-
 			System.out.println(sp.toString() + " " + overAllScore);
 
 		}
@@ -190,6 +189,7 @@ public class BoardEvaluateAlgorithm {
 								* ((float) Math.pow(DECREMENT_OSA_PATH, coOppList.indexOf(coOpp)));
 						System.out.println(String.format("# Increase %f score because: %s blocked %s", totalScore,
 								co.toString(), coOpp.toString()));
+
 					}
 
 					isOnePathBlocked = true;
