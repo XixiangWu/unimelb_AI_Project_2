@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PrimitiveIterator.OfDouble;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 import aiproj.slider.Referee.Piece;
@@ -57,16 +59,19 @@ public class BoardEvaluateAlgorithm {
 			// Step 2: analyzing every move score.
 			// Step 2.1: comparison against fastest path (for SmartPiece itself)
 			overAllScore += OSACompatibleTest(sp, moveLst[i].d, moveTimeMap.get(sp));
-			
-			System.out.println(sp.toString() + " " + overAllScore);
-			
+					
 			// Step 2.2: find if the next move will block others move
+			overAllScore += OSABlockingTest(bs, sp, moveLst[i].d);
 			
+			// Step 2.3: penalty for piece already has wasting move
+			overAllScore += wastePenalty(sp,moveLst[i].d);
+		
+			System.out.println(sp.toString() + " " + overAllScore);
 		}
 		
 		
 		
-		return 0.0f;
+		return overAllScore;
 	}
 	
 	
@@ -85,6 +90,7 @@ public class BoardEvaluateAlgorithm {
 	/** Determine if the move is the fastest move current */
 	public static float OSACompatibleTest(SmartPiece sp, Direction d, int index) {
 		
+		
 		Coordinate co = new Coordinate(sp.co.x, sp.co.y);
 		
 		switch (d) {
@@ -100,15 +106,67 @@ public class BoardEvaluateAlgorithm {
 				return OSA_PATH_SCORE*(float)Math.pow(((double)DECREMENT_OSA_PATH),index);
 			}
 		}
-		
-		
 		return -OSA_PATH_SCORE*(float)Math.pow(((double)DECREMENT_OSA_PATH),index);
 	}
 	
-	/** Determine if the move */
+	/** Determine if the move will block others move */
+	public static float OSABlockingTest(BrainState bs, SmartPiece sp, Direction d) {
+		
+		Coordinate co = new Coordinate(sp.co.x, sp.co.y);
+		
+		float totalScore = 0.0f;
+		
+		switch (d) {
+		case UP: co.y++; break;
+		case DOWN: co.y--; break;
+		case RIGHT: co.x++; break;
+		case LEFT: co.y++; break;
+		}
+		
+		boolean isOnePathBlocked = false;
+		
+		for (SmartPiece spOpp: bs.pieceListOpp) {
+			for (ArrayList<Coordinate> coOppList: spOpp.pathTableOSA) {
+				for (Coordinate coOpp: coOppList) {
+					
+					// blocking others way
+					if (co.x == coOpp.x && co.y == coOpp.y) {
+						totalScore+=OSA_BLOCK_SCORE*((float)Math.pow(DECREMENT_OSA_PATH, coOppList.indexOf(coOpp)));
+						System.out.println(String.format("# Increase %f score because: %s blocked %s",totalScore, co.toString(), coOpp.toString()));
+					}
+					
+					isOnePathBlocked = true;
+				}
+			}
+			if (isOnePathBlocked) {break;}
+		}
+		
+		return totalScore;
+	}
+	
+	/** Wasting move will cause the piece has more priority when moving toward end */
+	public static float wastePenalty(SmartPiece sp, Direction d) {
+		
+		// if the move direction is not towards to win edge, penalty score will be added
+		if (sp.turn == Piece.VSLIDER && d == Direction.UP) {
+			return ENCOURAGE_MOVE;
+		} 
+		
+		if (sp.turn == Piece.HSLIDER && d == Direction.RIGHT) {
+			return ENCOURAGE_MOVE;
+		}
+		
+		return sp.wasteStep*WASTE_PENALTY;
+	}
+	
 	
 
 	//========== Preset scores =============
 	public static final float OSA_PATH_SCORE = 2.0f; 
 	public static final float DECREMENT_OSA_PATH = 0.8f;
+	public static final float OSA_BLOCK_SCORE = 0.5f;
+	public static final float INCREMENT_OSA_PATH = 1.1f;
+	public static final float WASTE_PENALTY = -0.2f;
+	public static final float ENCOURAGE_MOVE = 0.1f;
+
 }
