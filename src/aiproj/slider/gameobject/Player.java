@@ -1,6 +1,6 @@
 package aiproj.slider.gameobject;
 
-import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.BrainState.Piece;
 
 /** Collection of game helper functions and constants */
 public interface Player {

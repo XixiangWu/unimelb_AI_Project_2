@@ -2,14 +2,14 @@ package aiproj.slider.brain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import aiproj.slider.Move.Direction;
-import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.BrainState.Piece;
 import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
-import sun.tools.jar.resources.jar;
 
 public class OptimisedSearchAlgorithm {
-
+	
 	// General attributes
 	private Board board;
 	private Piece turn;
@@ -29,7 +29,7 @@ public class OptimisedSearchAlgorithm {
 	public OptimisedSearchAlgorithm(Board board, int n, Piece turn) {
 		
 		this.board = board;
-		this.turn = turn;
+     	this.turn = turn;
 		this.n = n;
 		osaStateMap = new HashMap<SmartPiece,OSA_STATE>();
 		
@@ -134,7 +134,7 @@ public class OptimisedSearchAlgorithm {
 							 // abort the calculation and current solution for advisory opinions
 							 shouldAbort = true;
 							 osaStateMap.put(p, OSA_STATE.UNIFINSHED);
-							 System.out.println("Mission Abort!");
+							 //System.out.println("Mission Abort!");
 						}
 						
 					} else if (d == DIRECTION_MANIPULATION.TURN && grid[tempCoor.x+1][tempCoor.y] == Piece.BLOCK){

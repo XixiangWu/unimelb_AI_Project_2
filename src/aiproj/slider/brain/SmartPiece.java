@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
-import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.BrainState.Piece;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.gameobject.Coordinate;
 
@@ -63,7 +63,7 @@ public class SmartPiece {
 //		case LEFT: this.co.y++; break;
 //		}
 		
-		System.out.println(String.format("moved %s to %d %d",turn, co.x,co.y));
+		//System.out.println(String.format("moved %s to %d %d",turn, co.x,co.y));
 		
 		// if V is off edge leave it alone and no need to recalc again
 		if (isOffEdge) {return;}
@@ -111,7 +111,7 @@ public class SmartPiece {
 		if (isFound) {
 			
 			for (ArrayList<Coordinate> path: pathTableOSA) {
-				System.out.println(path.toString());
+				//System.out.println(path.toString());
 			}
 			// delete every thing else in table and leave only this path
 			pathTableOSA = newShortestPathTable;

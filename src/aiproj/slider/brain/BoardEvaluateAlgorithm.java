@@ -8,7 +8,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
-import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.BrainState.Piece;
 import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
 import aiproj.slider.gameobject.Player;
@@ -75,7 +75,7 @@ public class BoardEvaluateAlgorithm {
 			// Step 2.3: penalty for piece already has wasting move
 			overAllScore += wastePenalty(sp,moveLst.get(i).d);
 		
-			System.out.println(sp.toString() + " " + overAllScore);
+			
 		}
 		
 		
@@ -141,7 +141,7 @@ public class BoardEvaluateAlgorithm {
 					// blocking others way
 					if (co.x == coOpp.x && co.y == coOpp.y) {
 						totalScore+=OSA_BLOCK_SCORE*((float)Math.pow(DECREMENT_OSA_PATH, coOppList.indexOf(coOpp)));
-						System.out.println(String.format("# Increase %f score because: %s blocked %s",totalScore, co.toString(), coOpp.toString()));
+						
 					}
 					
 					isOnePathBlocked = true;

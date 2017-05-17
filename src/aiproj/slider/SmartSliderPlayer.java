@@ -1,6 +1,6 @@
 package aiproj.slider;
 import java.util.ArrayList;
-import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.BrainState.Piece;
 import aiproj.slider.brain.BoardEvaluateAlgorithm;
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
@@ -17,7 +17,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	public void init(int dimension, String board, char player) {
 		
 
-		System.out.println(" ======== next player ========");
+		
 		timer = new CPUTimer();
 		timer.start();
 		
@@ -100,55 +100,39 @@ public class SmartSliderPlayer implements SliderPlayer {
 		}
 	}
 
-
 	public Move move() {
-		final char[] DRE = {'U', 'D', 'L', 'R'};
 		// TODO Auto-generated method stub
+		ArrayList<Move> nextMoves = bs.board.generateMoves(bs.turn);
 		
-		int[] result = minimax(4,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
-		System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
-//		System.out.println("Before update");
-//		System.out.println(bs.board.toString());
+		int[] result = minimax(5,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
+		
 		if(result[1]==100){
 			return null;
 		}
 		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]),false);
-		System.out.println("After update");
-		System.out.println(bs.board.toString());
 
-		
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
 
 		
 	}
 
-	 
+	// MINIMAX with alpha-beta pruning
 	private int[] minimax(int depth, Piece player,BrainState bs,int alpha, int beta) {
-		 final char[] DRE = {'U', 'D', 'L', 'R'};
 		 Move bestMove = new Move(100,100,Move.Direction.RIGHT);
 	      // Generate possible next moves in a List 
 	      ArrayList<Move> nextMoves = bs.board.generateMoves(player);
-	      
-	      //for (Move move : nextMoves) {
-	    	//  System.out.format("all moves%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
-	      //}
-	     
-	      
 	      // myself is maximizing; while opp is minimizing
-	      
 	      Piece opp = (player == Piece.HSLIDER) ? Piece.VSLIDER : Piece.HSLIDER;
 	      int currentScore;
 	      
 	 
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
+             /* This evaluation algorithm still have some problem, so we use a simple one instead as a early version*/
+	    	 //currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, pastMoves)*1000);
 
-	    	  //currentScore = evaluate();
-
-	    	  currentScore = evaluate();
-//	    	 currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, pastMoves)*1000);
-
-	         //currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
+	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
+	         
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
 		      
 	      } else {
@@ -184,11 +168,5 @@ public class SmartSliderPlayer implements SliderPlayer {
 	      }
 	      
 	   }
-	public int evaluate(){
-		
-		
-		return (int)(Math.random()*100);
-		
-	}
 
 }

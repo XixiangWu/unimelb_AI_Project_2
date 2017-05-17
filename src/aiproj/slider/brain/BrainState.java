@@ -3,7 +3,6 @@ package aiproj.slider.brain;
 import java.util.ArrayList;
 
 import aiproj.slider.Move;
-import aiproj.slider.Referee.Piece;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
 import aiproj.slider.gameobject.Board;
@@ -15,6 +14,9 @@ public class BrainState {
 	public ArrayList<SmartPiece> pieceListOpp; // Smart piece list of the opponent
 	public Piece turn;
 	public OptimisedSearchAlgorithm osa;
+
+	/** Enumeration of all of the possible states of a board position */
+	public static enum Piece { BLANK, BLOCK, HSLIDER, VSLIDER, }
 
 	
 	/* This is a class that stores all the attributes related to the strategies*/
@@ -49,7 +51,7 @@ public class BrainState {
 			pieceListOpp = new ArrayList<SmartPiece>();
 			pieceListSelf = new ArrayList<SmartPiece>();
 			
-			System.out.println(this.board.toString());
+
 			
 			if (player=='H') { // Horizontal Piece
 				pieceListSelf = this.board.getHlist();

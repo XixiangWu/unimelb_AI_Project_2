@@ -9,7 +9,7 @@ import java.util.Scanner;
 import aiproj.slider.Move;
 import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.*;
-import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.BrainState.Piece;
 
 /**
  * Referee's (simplified) internal representation of the board,
@@ -22,8 +22,8 @@ public class Board {
 	private Piece[][] grid;
 	public int hsliders = 0, vsliders = 0, passes = 0;
 	private final int n;
-	private ArrayList<SmartPiece> Vlist=new ArrayList<SmartPiece>();
-	private ArrayList<SmartPiece> Hlist=new ArrayList<SmartPiece>();
+	public ArrayList<SmartPiece> Vlist=new ArrayList<SmartPiece>();
+	public ArrayList<SmartPiece> Hlist=new ArrayList<SmartPiece>();
 	public ArrayList<Move> pastMoves = new ArrayList<Move>();
 	
 	public ArrayList<SmartPiece> getVlist() {
@@ -267,7 +267,7 @@ public class Board {
 				i=slider.co.x;
 				j=slider.co.y;
 				if((i+1 < n && grid[i+1][j] == Piece.BLANK) || (i+1 == n)){
-					moves++;
+					moves=moves+10;
 				}else if(j+1 < n && grid[i][j+1] == Piece.BLANK){
 					moves++;
 				}else if(j-1 >= 0 && grid[i][j-1] == Piece.BLANK){
@@ -280,7 +280,7 @@ public class Board {
 				i=slider.co.x;
 				j=slider.co.y;
 				if((j+1 < n && grid[i][j+1] == Piece.BLANK )||(j+1 == n)){
-					moves++;
+					moves=moves+10;
 				}else if(i+1 < n && grid[i+1][j] == Piece.BLANK){
 					moves++;
 				}else if(i-1 >= 0 && grid[i-1][j] == Piece.BLANK){
@@ -302,7 +302,7 @@ public class Board {
 				i=slider.co.x;
 				j=slider.co.y;
 				if(j-1 >= 0 && grid[i][j-1] == Piece.VSLIDER){
-					blocks++;
+					blocks+=3;
 				}
 				
 			}
@@ -385,7 +385,7 @@ public class Board {
 				this.pastMoves.add(move);
 			}
 			piece = grid[move.i][move.j];
-			
+		
 			// where's the next space?
 			int toi = move.i, toj = move.j;
 			switch(move.d){
