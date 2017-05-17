@@ -1,6 +1,7 @@
 package aiproj.slider;
 import java.util.ArrayList;
 import aiproj.slider.brain.BrainState.Piece;
+import aiproj.slider.brain.BoardEvaluateAlgorithm;
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.brain.SmartPiece;
@@ -130,13 +131,12 @@ public class SmartSliderPlayer implements SliderPlayer {
              /* This evaluation algorithm still have some problem, so we use a simple one instead as a early version*/
 	    	 //currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, pastMoves)*1000);
 
-	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
+//	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 	         
-
 	    	  //currentScore = evaluate();
 
 //	    	  currentScore = evaluate();
-	    	 //currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, bs.board.pastMoves)*1000);
+	    	 currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, bs.board.pastMoves, bs.board.PieceList)*1000);
 
 	         //currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 
@@ -159,7 +159,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	                  bestMove = move;
 	               }
 	            } else {  // opp is minimizing player
-	               currentScore = minimax(depth - 1, bs.turn,bs, alpha, beta)[0];
+	               currentScore = minimax(depth - 1, player,bs, alpha, beta)[0];
 	               if (currentScore < beta) {
 	                  beta = currentScore;
 	                  bestMove = move;

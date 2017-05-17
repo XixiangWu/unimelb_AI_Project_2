@@ -96,15 +96,10 @@ public class SmartPiece {
 				newShortestPathTable.add(tempCoorList);
 			}
 			
-			
 		}
 		
 		// if it is still on the path
 		if (isFound) {
-			
-			for (ArrayList<Coordinate> path: pathTableOSA) {
-				//System.out.println(path.toString());
-			}
 			// delete every thing else in table and leave only this path
 			pathTableOSA = newShortestPathTable;
 			osaState = OSA_STATE.FINISHED;
@@ -113,6 +108,7 @@ public class SmartPiece {
 			wasteStep++;
 			osaState = OSA_STATE.NEED_RECALC;
 		}
+
 		
 	}
 	
