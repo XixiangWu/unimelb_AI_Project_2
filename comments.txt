@@ -28,6 +28,9 @@ Update of OSA:
 Recalculation of OSA:
 Sometimes OSA needs to be recalculated, for instance when a move is completely blocked by noun-blank pieces, the move is forced to move off the suggestion path, and so on. In all this circumstances, OSA will be recalculated for each piece.
 
+TODO: 
+OptimisedSearchAlgorithmBlockTarget()
+
 
 ========================================================================
 # Board Evaluate Algorithm (aka BEA)
