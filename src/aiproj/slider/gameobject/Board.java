@@ -24,7 +24,8 @@ public class Board {
 	private final int n;
 	private ArrayList<SmartPiece> Vlist=new ArrayList<SmartPiece>();
 	private ArrayList<SmartPiece> Hlist=new ArrayList<SmartPiece>();
-
+	public ArrayList<Move> pastMoves = new ArrayList<Move>();
+	
 	public ArrayList<SmartPiece> getVlist() {
 		return Vlist;
 	}
@@ -373,14 +374,16 @@ public class Board {
 
 		      return nextMoves;
 		   }
-	  public void update(Move move){
+	  public void update(Move move,boolean isSimulation){
 		  Piece piece;
 
 		// null move
 			if (move == null) {
 				return;
 				}
-			
+			if(isSimulation){
+				this.pastMoves.add(move);
+			}
 			piece = grid[move.i][move.j];
 			
 			// where's the next space?
@@ -417,13 +420,15 @@ public class Board {
 			}
 			return;
 	  }
-	  public void undoMove(Move move){
+	  public void undoMove(Move move,boolean isSimulation){
 		  Piece piece;
 		// null move
 			if (move == null) {
 				return;
 				}
-			
+			if(isSimulation){
+				this.pastMoves.remove(pastMoves.size()-1);
+			}
 			// where's the next space?
 			int toi = move.i, toj = move.j;
 			switch(move.d){
@@ -482,6 +487,7 @@ public class Board {
 				  //OUT
 				  case 2:
 					 piece.isOffEdge=true;
+
 				  //IN
 				  case 3:
 					 piece.isOffEdge=false;

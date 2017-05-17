@@ -1,6 +1,8 @@
 package aiproj.slider.brain;
 
 import java.util.ArrayList;
+
+import aiproj.slider.Move;
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
@@ -13,6 +15,7 @@ public class BrainState {
 	public ArrayList<SmartPiece> pieceListOpp; // Smart piece list of the opponent
 	public Piece turn;
 	public OptimisedSearchAlgorithm osa;
+
 	
 	/* This is a class that stores all the attributes related to the strategies*/
 	protected BrainState(Board board, ArrayList<SmartPiece> pieceListOpp, ArrayList<SmartPiece> pieceListSelf, Piece turn, OptimisedSearchAlgorithm osa) {
