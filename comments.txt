@@ -47,8 +47,13 @@ OptimisedSearchAlgorithmBlockTarget()
 -> this evaluation is to evaluate if a piece already had one or some waste moves(move off the suggest path), we should encourage this piece to move towards the end rather than let it move around with other purposes.
 
 ========================================================================
-# Alpha-Beta pruning
+# MiniMax with Alpha-Beta pruning
+
+Use the algorithms above as the heuristic board evaluation function to calculate scores for each valid move in order to implement the Minimax Search Algorithm. Alpha-beta Pruning
+is added to reduce the number of nodes that needs to be evaluated in the search tree.
 
 ========================================================================
 # Mistake we made
+
+Took too much time on the complicated algorithm. We should start project earlier in order to improve the algorithm and research the efficiency of different strategy.
 

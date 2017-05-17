@@ -6,10 +6,9 @@ import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 import aiproj.slider.brain.BrainState.Piece;
 import aiproj.slider.gameobject.Coordinate;
-<<<<<<< HEAD
+
 import aiproj.slider.gameobject.Player;
-=======
->>>>>>> origin/master
+
 
 public class BoardEvaluateAlgorithm {
 

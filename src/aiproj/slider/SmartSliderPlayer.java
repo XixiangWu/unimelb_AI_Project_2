@@ -101,13 +101,13 @@ public class SmartSliderPlayer implements SliderPlayer {
 
 	public Move move() {
 		// TODO Auto-generated method stub
-		ArrayList<Move> nextMoves = bs.board.generateMoves(bs.turn);
-		
+		//Get the score and best move in a integer list by minimax
 		int[] result = minimax(5,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
-		
+		//If best move is the initial value return null
 		if(result[1]==100){
 			return null;
 		}
+		//update our memory
 		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]),false);
 
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);

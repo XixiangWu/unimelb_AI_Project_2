@@ -11,6 +11,9 @@ import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.*;
 import aiproj.slider.brain.BrainState.Piece;
 
+
+
+// Methods copied from referee
 /**
  * Referee's (simplified) internal representation of the board,
  * handles validation and rendering
@@ -22,23 +25,25 @@ public class Board {
 	private Piece[][] grid;
 	public int hsliders = 0, vsliders = 0, passes = 0;
 	private final int n;
+	//Arrayllist for storing different pieces respectively
 	public ArrayList<SmartPiece> Vlist=new ArrayList<SmartPiece>();
 	public ArrayList<SmartPiece> Hlist=new ArrayList<SmartPiece>();
+	//Arrayllist for storing Moves moved
 	public ArrayList<Move> pastMoves = new ArrayList<Move>();
+	//Arrayllist for storing pieces moved
 	public ArrayList<SmartPiece> PieceList = new ArrayList<SmartPiece>();
 	
+	//Getter and Setter
 	public ArrayList<SmartPiece> getVlist() {
 		return Vlist;
 	}
-
-
 	public ArrayList<SmartPiece> getHlist() {
 		return Hlist;
 	}
-	
 	public int getN() {
 		return n;
 	}
+	
 	
 	/** represent a board as text for rendering */
 	public static final char[] SYMBOLS = {'+', 'B', 'H', 'V'};
@@ -184,8 +189,8 @@ public class Board {
 		return blocks;
 		
 	}
-	
-	  public ArrayList<Move> generateMoves(Piece turn) {
+	// Method used to generate valid moves according to the current board state
+	public ArrayList<Move> generateMoves(Piece turn) {
 		      ArrayList<Move> nextMoves = new ArrayList<Move>(); // allocate List
 
 		      // If game over, i.e., no next move
@@ -239,6 +244,7 @@ public class Board {
 
 		      return nextMoves;
 		   }
+	// Update our memory(Brain state) 
 	  public void update(Move move,boolean isSimulation){
 		  Piece piece;
 
@@ -246,7 +252,9 @@ public class Board {
 			if (move == null) {
 				return;
 				} 
+			// if it is simulation
 			if(isSimulation){
+				//record the past operations
 				this.pastMoves.add(move);
 				if(this.grid[move.i][move.j] == Piece.HSLIDER){
 					for (SmartPiece pastPiece:Hlist){
@@ -272,7 +280,7 @@ public class Board {
 				case RIGHT:	toi++; break;
 				case LEFT:	toi--; break;
 			}
-			
+			// Let the pieces go out
 			if (piece == Piece.HSLIDER && toi == n) {
 				grid[move.i][move.j] = Piece.BLANK;
 				hsliders--;
@@ -289,7 +297,7 @@ public class Board {
 				
 				grid[toi][toj] = piece;
 				grid[move.i][move.j]=Piece.BLANK;
-
+				// Let the pieces swap
 				if(piece == Piece.HSLIDER){		
 					updateList(Hlist,move.i,move.j,toi,toj,1);
 				}else{
@@ -298,9 +306,11 @@ public class Board {
 			}
 			return;
 	  }
+	  
+	  // undo the move after the simulation
 	  public void undoMove(Move move,boolean isSimulation){
 		  Piece piece;
-		// null move
+		  // null move
 			if (move == null) {
 				return;
 				}
@@ -318,7 +328,7 @@ public class Board {
 			}
 			
 
-			// If a piece off the board?
+			// If a piece off the board?  Let them back
 			if (move.d == Move.Direction.RIGHT && toi == n) {
 				piece = Piece.HSLIDER;
 				hsliders++;
@@ -338,6 +348,7 @@ public class Board {
 				grid[move.i][move.j]=piece;
 				
 				grid[toi][toj] = Piece.BLANK;
+				// Let the pieces swap
 				if(piece == Piece.HSLIDER){
 					updateList(Hlist,toi,toj,move.i,move.j,1);		
 				}else{
@@ -345,12 +356,13 @@ public class Board {
 				}
 			}
 
-			// no? all good? alright, let's make the move!
+			// ALL right, let's make the move!
 			grid[move.i][move.j] = piece;
 
 			return;
 	  }
 	  
+	  // Method for updating the piece list according to different command
 	  public void updateList(ArrayList<SmartPiece> list,int i,int j,int toi,int toj,int command){
 		  Iterator<SmartPiece> iterator = list.iterator();
 		  
@@ -370,9 +382,7 @@ public class Board {
 				  //IN
 				  case 3:
 					 piece.isOffEdge=false;
-				 }
-				 
-
+				 }	 
 			  }
 		  }
 	  }
