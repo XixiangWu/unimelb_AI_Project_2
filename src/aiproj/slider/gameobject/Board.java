@@ -248,7 +248,19 @@ public class Board {
 				} 
 			if(isSimulation){
 				this.pastMoves.add(move);
-				
+				if(this.grid[move.i][move.j] == Piece.HSLIDER){
+					for (SmartPiece pastPiece:Hlist){
+						if(pastPiece.co.x==move.i&&pastPiece.co.y==move.j){
+							PieceList.add(pastPiece);
+						}
+					}
+				}else{
+					for (SmartPiece pastPiece:Vlist){
+						if(pastPiece.co.x==move.i&&pastPiece.co.y==move.j){
+							PieceList.add(pastPiece);
+						}	
+					}
+				}
 			}
 			piece = grid[move.i][move.j];
 		
@@ -294,6 +306,7 @@ public class Board {
 				}
 			if(isSimulation){
 				this.pastMoves.remove(pastMoves.size()-1);
+				this.PieceList.remove(PieceList.size()-1);
 			}
 			// where's the next space?
 			int toi = move.i, toj = move.j;

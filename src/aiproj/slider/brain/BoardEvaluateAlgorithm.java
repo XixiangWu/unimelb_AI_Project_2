@@ -11,7 +11,6 @@ import aiproj.slider.brain.BrainState.Piece;
 import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
 import aiproj.slider.gameobject.Player;
-import sun.tools.jar.resources.jar;
 
 public class BoardEvaluateAlgorithm {
 

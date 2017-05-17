@@ -3,7 +3,6 @@ package aiproj.slider.brain;
 import java.util.ArrayList;
 
 import aiproj.slider.Move;
-import aiproj.slider.Move.Direction;
 import aiproj.slider.brain.BrainState.Piece;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.gameobject.Coordinate;
@@ -38,13 +37,6 @@ public class SmartPiece {
 		noShortestOSA = pathTableOSA.size();
 		osaState = OSA_STATE.FINISHED;
 		
-//		System.out.println(i+" "+j);
-//		for (ArrayList<Coordinate> coList : pathTableOSA) {
-//			for (Coordinate co: coList) {
-//				System.out.println(co.toString());
-//			}
-//			System.out.println();
-//		}
 	}
 	
 	public void osaResetup(OptimisedSearchAlgorithm osa) {
