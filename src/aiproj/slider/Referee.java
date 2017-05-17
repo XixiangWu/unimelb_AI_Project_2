@@ -38,7 +38,6 @@ public class Referee {
 		CPUTimer timer = new CPUTimer(); // nanosecond CPU usage timer
 		long[] times = new long[]{0, 0}; // cumulative time spent by each player
 		
-		
 		SliderPlayer[] players = new SliderPlayer[2];
 		try {
 			timer.start();

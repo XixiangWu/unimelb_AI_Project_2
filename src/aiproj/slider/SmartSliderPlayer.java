@@ -128,7 +128,6 @@ public class SmartSliderPlayer implements SliderPlayer {
 	 
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
-             
 	    	 currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, bs.board.pastMoves, bs.board.PieceList)*1000);
 	    	 //another easy evaluation
 	         //currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
@@ -143,7 +142,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	        	if(bs.board.canMove(move.i,move.j)){
 	        		bs.board.update(move,true);
 	        	}
-	        	
+	        	//System.out.println(bs.turn);
 	            
 	            if (player == bs.turn) {  // my turn is maximizing player
 	               currentScore = minimax(depth - 1, opp, bs, alpha, beta)[0];
@@ -152,7 +151,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	                  bestMove = move;
 	               }
 	            } else {  // opp is minimizing player
-	               currentScore = minimax(depth - 1, player,bs, alpha, beta)[0];
+	               currentScore = minimax(depth - 1, opp,bs, alpha, beta)[0];
 	               if (currentScore < beta) {
 	                  beta = currentScore;
 	                  bestMove = move;

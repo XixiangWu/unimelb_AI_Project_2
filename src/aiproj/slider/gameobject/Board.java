@@ -237,7 +237,7 @@ public class Board {
 								if(i-1 >= 0 && grid[i-1][j] == Piece.BLANK){
 									nextMoves.add(new Move(i,j,Move.Direction.LEFT));
 								}
-							}
+						    }
 						}
 					}
 		      }
