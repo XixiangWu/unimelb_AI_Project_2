@@ -43,8 +43,6 @@ public class OptimisedSearchAlgorithm {
 		
 		needTransform = (p.turn == Piece.VSLIDER) ? true : false;
 		
-//		System.out.println("===========OSA=============");
-
 		// INIT: Abort flag: means no move can be determined
 		boolean shouldAbort = false;
 		
@@ -90,7 +88,6 @@ public class OptimisedSearchAlgorithm {
 					
 					if (d == DIRECTION_MANIPULATION.APPROACH_GOAL) {	
 						
-	//					System.out.println(" Approaching goal | can move to next :"+tempCoor.x+" "+tempCoor.y);
 						if (grid[tempCoor.x+1][tempCoor.y] != Piece.BLOCK){
 							// if the next right cell is not block, just move!
 							tempCoor.x++;
@@ -138,8 +135,7 @@ public class OptimisedSearchAlgorithm {
 						}
 						
 					} else if (d == DIRECTION_MANIPULATION.TURN && grid[tempCoor.x+1][tempCoor.y] == Piece.BLOCK){
-	//					System.out.println(" Turning point | can move to next :"+tempCoor.x+" "+tempCoor.y);
-	
+						
 						// can't move forward, blocked by BLOCK cell, try to move UP or DOWN to bypass the BLOCK cell 
 						Direction tempDir = potentialBlockingEvaluation(tempCoor, grid);
 						
@@ -149,12 +145,10 @@ public class OptimisedSearchAlgorithm {
 							if (tempDir == Direction.UP) {
 								tempCoor.y++;
 								optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
-//								turningPointListCopy.add(new Coordinate(tempCoor.x, tempCoor.y));
 								break;
 							} else {
 								tempCoor.y--;
 								optimizedPath.add((needTransform) ? new Coordinate(tempCoor.y, tempCoor.x) : new Coordinate(tempCoor.x, tempCoor.y));
-//								turningPointListCopy.add(new Coordinate(tempCoor.x, tempCoor.y));
 								break;
 							}
 							
@@ -181,24 +175,8 @@ public class OptimisedSearchAlgorithm {
 				osaStateMap.put(p, OSA_STATE.FINISHED);
 			}
 			
-//			System.out.print("optimezed Path: ");
-//			for (Coordinate c:optimizedPath) {
-//				System.out.print(c.toString());
-//			}
-			
-//			System.out.println();
-			
+			// store the new path
 			optimizedPathTable.add(optimizedPath);
-			
-//			// calc other derived path
-//			if (turningPointListCopy.size() != 0) {
-//				addEquivalentPathToTable(
-//						optimizedPathTable, 
-//						turningPointListCopy, 
-//						p.co
-//						);
-//				turningPointListCopy.remove(0);
-//			}
 			
 			// Clean all the elements 
 			tempCoor = (needTransform) ? new Coordinate(p.co.y, p.co.x) : new Coordinate(p.co.x, p.co.y);
@@ -240,7 +218,6 @@ public class OptimisedSearchAlgorithm {
 			return;
 		}
 		
-//		System.out.println("=== Derived === ");
 		for (ArrayList<Coordinate> optimizedPath: optimizedPathTable) {
 			
 			int dir_x, dir_y, times = 0, tpIndex;
@@ -286,30 +263,13 @@ public class OptimisedSearchAlgorithm {
 		
 		for (ArrayList<Coordinate> tempPath: tempPathTable) {
 			
-//			System.out.print("derived path: ");
-//			for (Coordinate c:tempPath) {
-//				System.out.print(c.toString());
-//			}
-//			System.out.println();
-			
 			optimizedPathTable.add(tempPath);
 		}
-		
-//		System.out.println("=== Derived Finished ===");
-
-		
-		
 	}
 	
 	/** This method takes target piece and return the "shortest" path to block the smart piece */
 	private ArrayList<Coordinate> OptimisedSearchAlgorithmBlockTarget(SmartPiece p, Coordinate target) {
-		
-		// TODO: OSA for target blocking
-		
-		
-		
 		return null;
-		
 	}
 	
 	public Piece[][] boardTransformation(Piece[][] gridOriginal, int n) {
@@ -342,11 +302,8 @@ public class OptimisedSearchAlgorithm {
 		// Evaluate Up score | Step1: find the shortest(straight) path to edge
 		Coordinate gc = determineGoalCoor(new Coordinate(cc.x, cc.y+1), EDGE.RIGHT, n);
 		
-//		System.out.println(gc.x +" "+gc.y);
-
 		// Evaluate Up score | Step2: evaluate score for up score
 		for (int i = cc.x+1; i < gc.x; i++) {
-//			System.out.println("Determining \"UP  \": "+i+" "+gc.y+" with value: "+grid[i][gc.y].ordinal()+" | "+(i-cc.x)+" "+(gc.x-cc.x));
 			if (grid[i][gc.y] == Piece.VSLIDER) {
 				if (grid[i][gc.y] == Piece.VSLIDER) {
 					UpScore+=PLAYER_SCORE*(1.0f-(i-1-cc.x)/((float)(gc.x-cc.x))); 
@@ -369,7 +326,6 @@ public class OptimisedSearchAlgorithm {
 
 		// Evaluate Down score | Step1: find the shortest(straight) path to edge
 		for (int i = cc.x+1; i < gc.x; i++) {
-//			System.out.println("Determining \"DOWN\": "+i+" "+gc.y+" with value: "+grid[i][gc.y].ordinal()+" | "+(i-cc.x)+" "+(gc.x-cc.x));
 			if (grid[i][gc.y] == Piece.VSLIDER) {
 				if (grid[i][gc.y] == Piece.VSLIDER) {
 					DownScore+=PLAYER_SCORE*(1.0f-(i-1-cc.x)/((float)(gc.x-cc.x))); 
@@ -387,18 +343,6 @@ public class OptimisedSearchAlgorithm {
 			}
 		}
 		
-		
-//		for (int i=board.getN()-1; i>=0; i--) {
-//			for (int j=0; j<board.getN(); j++) {
-//				System.out.print(Board.SYMBOLS[grid[j][i].ordinal()] + " ");
-//			}
-//			System.out.println();
-//		}
-//		System.out.println(turn+" Player's piece at "+ cc.x+" "+cc.y +" gets");
-//		System.out.println("UpScore: "+ UpScore +" | DownScore: "+DownScore);
-		
-//		System.out.println("========== Eval ==============");
-		
 		// Compare two score, go direction with lower score
 		if (UpScore > DownScore) {
 			return Direction.DOWN;
@@ -411,6 +355,7 @@ public class OptimisedSearchAlgorithm {
 	}
 	
 	
+	/** Find the goal coordinate (coordinate on the edge)*/
 	public static Coordinate determineGoalCoor(Coordinate cc, EDGE edge, int n) {
 		
 		Coordinate gc = null;
