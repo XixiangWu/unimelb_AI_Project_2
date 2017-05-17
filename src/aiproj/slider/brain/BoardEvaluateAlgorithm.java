@@ -59,12 +59,14 @@ public class BoardEvaluateAlgorithm {
 			// Step 2: analyzing every move score.
 			// Step 2.1: comparison against fastest path (for SmartPiece itself)
 			overAllScore += OSACompatibleTest(sp, moveLst[i].d, moveTimeMap.get(sp));
-			
-			System.out.println(sp.toString() + " " + overAllScore);
-			
+					
 			// Step 2.2: find if the next move will block others move
 			overAllScore += OSABlockingTest(bs, sp, moveLst[i].d);
 			
+			// Step 2.3: penalty for piece already has wasting move
+			overAllScore += wastePenalty(sp,moveLst[i].d);
+		
+			System.out.println(sp.toString() + " " + overAllScore);
 		}
 		
 		
@@ -142,11 +144,29 @@ public class BoardEvaluateAlgorithm {
 		return totalScore;
 	}
 	
+	/** Wasting move will cause the piece has more priority when moving toward end */
+	public static float wastePenalty(SmartPiece sp, Direction d) {
+		
+		// if the move direction is not towards to win edge, penalty score will be added
+		if (sp.turn == Piece.VSLIDER && d == Direction.UP) {
+			return ENCOURAGE_MOVE;
+		} 
+		
+		if (sp.turn == Piece.HSLIDER && d == Direction.RIGHT) {
+			return ENCOURAGE_MOVE;
+		}
+		
+		return sp.wasteStep*WASTE_PENALTY;
+	}
+	
+	
 
 	//========== Preset scores =============
 	public static final float OSA_PATH_SCORE = 2.0f; 
 	public static final float DECREMENT_OSA_PATH = 0.8f;
 	public static final float OSA_BLOCK_SCORE = 0.5f;
 	public static final float INCREMENT_OSA_PATH = 1.1f;
+	public static final float WASTE_PENALTY = -0.2f;
+	public static final float ENCOURAGE_MOVE = 0.1f;
 
 }

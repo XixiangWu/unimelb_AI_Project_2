@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.brain.BrainState;
+import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.brain.SmartPiece;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
+import aiproj.slider.gameobject.Coordinate;
 
 public class SmartSliderPlayer implements SliderPlayer {
 
@@ -33,7 +35,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 			e.printStackTrace();
 		}
 		
-		System.out.println(String.format("Time usage: %f",timer.clock()/1000000000.0f));
+//		System.out.println(String.format("Time usage: %f",timer.clock()/1000000000.0f));
 	}
 
 	@Override
@@ -52,8 +54,55 @@ public class SmartSliderPlayer implements SliderPlayer {
 			System.out.format("piece:%d,%d\n",piece.co.x,piece.co.y);
 		}
 		
-		// TODO: Retrieve SmartPiece and recalc OSA
+		if (move!=null) {
 		
+		Coordinate newCoor = new Coordinate(move.i, move.j);
+		
+		switch (move.d) {
+		case UP: newCoor.y++; break;
+		case DOWN: newCoor.y--; break;
+		case LEFT: newCoor.x--; break;
+		case RIGHT: newCoor.y++; break;
+
+		default:
+			break;
+		}
+		
+		for (SmartPiece sp: bs.pieceListSelf) {
+			
+			// Retrieve SmartPiece
+			if (sp.co.x == newCoor.x && sp.co.y == newCoor.y) {
+				
+				// Thats the moved piece
+				sp.updateOSA();
+				
+				// The OSA need to be recalculated
+				if (sp.osaState == OSA_STATE.NEED_RECALC) {
+					sp.osaResetup(bs.osa);
+				}
+				
+			
+			}
+		}
+		
+		for (SmartPiece sp: bs.pieceListOpp) {
+			
+			// Retrieve SmartPiece
+			if (sp.co.x == newCoor.x && sp.co.y == newCoor.y) {
+				
+				// Thats the moved piece
+				sp.updateOSA();
+				
+				// The OSA need to be recalculated
+				if (sp.osaState == OSA_STATE.NEED_RECALC) {
+					sp.osaResetup(bs.osa);
+				}
+				
+			
+			}
+		}
+		
+		}
 	}
 
 

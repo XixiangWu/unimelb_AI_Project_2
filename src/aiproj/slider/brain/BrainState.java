@@ -2,6 +2,7 @@ package aiproj.slider.brain;
 
 import java.util.ArrayList;
 import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
 import aiproj.slider.gameobject.Board;
 
@@ -11,10 +12,10 @@ public class BrainState {
 	public ArrayList<SmartPiece> pieceListSelf; // Smart piece list of the player itself, 
 	public ArrayList<SmartPiece> pieceListOpp; // Smart piece list of the opponent
 	public Piece turn;
-	public OptimizedSearchAlgorithm osa;
+	public OptimisedSearchAlgorithm osa;
 	
 	/* This is a class that stores all the attributes related to the strategies*/
-	protected BrainState(Board board, ArrayList<SmartPiece> pieceListOpp, ArrayList<SmartPiece> pieceListSelf, Piece turn, OptimizedSearchAlgorithm osa) {
+	protected BrainState(Board board, ArrayList<SmartPiece> pieceListOpp, ArrayList<SmartPiece> pieceListSelf, Piece turn, OptimisedSearchAlgorithm osa) {
 		
 
 		this.board = board;
@@ -39,7 +40,7 @@ public class BrainState {
 		private ArrayList<SmartPiece> pieceListSelf; // Smart piece list of the player itself, 
 		private ArrayList<SmartPiece> pieceListOpp; // Smart piece list of the opponent
 		private Piece turn;
-		private OptimizedSearchAlgorithm osa;
+		private OptimisedSearchAlgorithm osa;
 		
 		public BrainStateBuilder setBoard(int dimension, String board) {
 			this.board = new Board(dimension, board);
@@ -68,7 +69,7 @@ public class BrainState {
 		public BrainStateBuilder buildOSA() {
 			
 			// INIT: Optimzed Search Algorithm
-			this.osa = new OptimizedSearchAlgorithm(board, board.getN(), turn);
+			this.osa = new OptimisedSearchAlgorithm(board, board.getN(), turn);
 			
 			return this;
 		}
@@ -76,11 +77,11 @@ public class BrainState {
 		public BrainStateBuilder buildSmartPieceByOSA() {
 						
 			for (SmartPiece sp: pieceListSelf) {
-				sp.setup(osa.OptimizedSearchAlgorithmEdge(sp));
+				sp.setup(osa.OptimisedSearchAlgorithmEdge(sp));
 			}
 
 			for (SmartPiece sp: pieceListOpp) {
-				sp.setup(osa.OptimizedSearchAlgorithmEdge(sp));
+				sp.setup(osa.OptimisedSearchAlgorithmEdge(sp));
 			}
 			
 			return this;

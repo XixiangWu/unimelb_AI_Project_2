@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 import aiproj.slider.Referee.Piece;
-import aiproj.slider.brain.OptimizedSearchAlgorithm.OSA_STATE;
+import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.gameobject.Coordinate;
 
 public class SmartPiece {
@@ -36,6 +36,7 @@ public class SmartPiece {
 		this.pathTableOSA = new ArrayList<ArrayList<Coordinate>>();
 		this.pathTableOSA= pathTableOSA;
 		noShortestOSA = pathTableOSA.size();
+		osaState = OSA_STATE.FINISHED;
 		
 //		System.out.println(i+" "+j);
 //		for (ArrayList<Coordinate> coList : pathTableOSA) {
@@ -46,21 +47,26 @@ public class SmartPiece {
 //		}
 	}
 	
-	public void osaResetup(OptimizedSearchAlgorithm osa) {
+	public void osaResetup(OptimisedSearchAlgorithm osa) {
 		if (osaState != OSA_STATE.FINISHED) {
-			pathTableOSA = osa.OptimizedSearchAlgorithmEdge(this);
+			pathTableOSA = osa.OptimisedSearchAlgorithmEdge(this);
 		}
 	}
 	
-	public void update(Direction d) {
+	public void updateOSA() {
 		
-		// when this piece is moved
-		switch (d) {
-		case UP: this.co.y++; break;
-		case DOWN: this.co.y--; break;
-		case RIGHT: this.co.x++; break;
-		case LEFT: this.co.y++; break;
-		}
+//		// when this piece is moved
+//		switch (d) {
+//		case UP: this.co.y++; break;
+//		case DOWN: this.co.y--; break;
+//		case RIGHT: this.co.x++; break;
+//		case LEFT: this.co.y++; break;
+//		}
+		
+		System.out.println(String.format("moved %s to %d %d",turn, co.x,co.y));
+		
+		// if V is off edge leave it alone and no need to recalc again
+		if (isOffEdge) {return;}
 		
 		// check if the piece is still on the original shortest path 
 		boolean isFound = false;
@@ -72,7 +78,8 @@ public class SmartPiece {
 			ArrayList<Coordinate> tempCoorList = new ArrayList<Coordinate>();
 			
 			if (!isFound) {
-				for (Coordinate co: coList) {
+				
+				for (Coordinate co: coList) {	
 					if (co.x == this.co.x && co.y == this.co.y) {
 					
 						// found a match
@@ -87,9 +94,10 @@ public class SmartPiece {
 							tempCoorListInner.add(tempCo);
 						}						
 						newShortestPathTable.add(tempCoorListInner);
+						break;
 					}
 				} 
-			} else if (isFound && tempCoorList.contains(tempFlagCoor)) {
+			} else if (coList.contains(tempFlagCoor)) {
 				for (Coordinate tempCo: coList) {
 					tempCoorList.add(tempCo);
 				}
@@ -101,8 +109,13 @@ public class SmartPiece {
 		
 		// if it is still on the path
 		if (isFound) {
+			
+			for (ArrayList<Coordinate> path: pathTableOSA) {
+				System.out.println(path.toString());
+			}
 			// delete every thing else in table and leave only this path
 			pathTableOSA = newShortestPathTable;
+			osaState = OSA_STATE.FINISHED;
 			
 		} else { // if it is off the path
 			wasteStep++;
