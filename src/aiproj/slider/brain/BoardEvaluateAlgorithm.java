@@ -17,7 +17,7 @@ public class BoardEvaluateAlgorithm {
 	 * move), move is the testing move which a score needs to be provided after
 	 * evaluating
 	 */
-	public static float BEA(BrainState bs, ArrayList<Move> moveLst) {
+	public static float BEA(BrainState bs, ArrayList<Move> moveLst, ArrayList<SmartPiece> spLst) {
 
 		// overall Score
 		float overAllScore = 0.0f;
@@ -25,54 +25,8 @@ public class BoardEvaluateAlgorithm {
 		Piece playerTurn = bs.turn;
 		Piece oppoTurn = (playerTurn == Piece.HSLIDER) ? Piece.VSLIDER : Piece.VSLIDER;
 		Piece roundTurn;
-
-		ArrayList<Coordinate> tempCoordinateLst = new ArrayList<Coordinate>();
-
-		for (int j = moveLst.size() -1 ; j >=0 ; j--) {
-		
-			int i = moveLst.size() - 1 - j;
-			Coordinate movePrev = new Coordinate(moveLst.get(j).i,moveLst.get(j).j);
-			
-			switch (moveLst.get(j).d) {
-			case UP: movePrev.y--; break;
-			case DOWN: movePrev.y++; break;
-			case LEFT: movePrev.x++; break;
-			case RIGHT: movePrev.x--; break;
-			default: break;
-			}
-			
-			boolean isFound = false;
-			Coordinate deleteCo = null;
-			int index = 100;
-			for (Coordinate tempCo: tempCoordinateLst) {
-				if (movePrev.x == tempCo.x && movePrev.y == tempCo.y) {
-					isFound = true;
-					deleteCo = tempCo;
-					index = tempCoordinateLst.indexOf(tempCo);
-				}
-			}
-			
-			switch (moveLst.get(j).d) {
-			case UP: movePrev.y++; break;
-			case DOWN: movePrev.y--; break;
-			case LEFT: movePrev.x--; break;
-			case RIGHT: movePrev.x--; break;
-			default: break;
-			}
-			
-			if (isFound) {
-				tempCoordinateLst.remove(index);
-				tempCoordinateLst.add(index, new Coordinate(moveLst.get(j).i, moveLst.get(j).j));
-			} else {
-				tempCoordinateLst.add(new Coordinate(moveLst.get(j).i, moveLst.get(j).j));
-			}
-			
-		}
-		
 		
 		for (int i = 0; i < moveLst.size(); i++) {
-
-			int j = moveLst.size() - 1 - i;
 
 			// Step 1: Retrieve SmartPiece for every move
 			SmartPiece sp;
@@ -82,11 +36,7 @@ public class BoardEvaluateAlgorithm {
 			
 			ArrayList<SmartPiece> tempList = (roundTurn == Piece.HSLIDER) ? bs.board.getHlist() : bs.board.getVlist();
 
-			if (roundTurn == playerTurn) {
-				sp = retrieveSmartPiece(tempCoordinateLst.get(i).x, tempCoordinateLst.get(i).y, tempList);
-			} else {
-				sp = retrieveSmartPiece(tempCoordinateLst.get(i).x, tempCoordinateLst.get(i).y, tempList);
-			}
+			sp = spLst.get(i);
 
 			if (sp != null) {
 				if (moveTimeMap.get(sp) != null) {
@@ -96,58 +46,61 @@ public class BoardEvaluateAlgorithm {
 				}
 			}
 
-			// Step 2: analyzing every move score.
-			// Step 2.1: comparison against fastest path (for SmartPiece itself)
-			overAllScore += OSACompatibleTest(sp, moveLst.get(j).d, moveTimeMap.get(sp));
+			// Create a next move coordinate for analyzing
+			Coordinate co = new Coordinate(sp.co.x, sp.co.y);
 
-			// Step 2.2: find if the next move will block others move
-			overAllScore += OSABlockingTest(bs, sp, moveLst.get(j).d);
+			switch (moveLst.get(i).d) {
+			case UP:
+				co.y++;
+				break;
+			case DOWN:
+				co.y--;
+				break;
+			case RIGHT:
+				co.x++;
+				break;
+			case LEFT:
+				co.y++;
+				break;
+			}
+			
+			// if the move go beyond the boundary
+			if (co.y > bs.board.getN() && co.x > bs.board.getN()) {
+				
+				overAllScore += CROSS_EDGE;
+				
+			} else {
+				
+				// Step 2: analyzing every move score.
+				// Step 2.1: comparison against fastest path (for SmartPiece itself)
+				overAllScore += OSACompatibleTest(sp, moveLst.get(i).d, moveTimeMap.get(sp),co);
+	
+				// Step 2.2: find if the next move will block others move
+				overAllScore += OSABlockingTest(bs, sp, moveLst.get(i).d,co);
+	
+				// Step 2.3: penalty for piece already has wasting move
+				overAllScore += wastePenalty(sp,moveLst.get(i).d);
 
-			// Step 2.3: penalty for piece already has wasting move
-			overAllScore += wastePenalty(sp,moveLst.get(i).d);
+				// Step 2.4: add score when line approaching to others end edge
+				overAllScore += lineAddition(sp,bs.board.getN());
+				
+//				System.out.println(sp.toString() + " " + overAllScore);
 
-			System.out.println(sp.toString() + " " + overAllScore);
-
+			}
 		}
 
 		return overAllScore;
 	}
 
-	/** Retrieve SmartPiece from */
-	public static SmartPiece retrieveSmartPiece(int x, int y, ArrayList<SmartPiece> pieceLst) {
-
-		for (SmartPiece sp : pieceLst) {
-			if (sp.co.x == x && sp.co.y == y) {
-				return sp;
-			}
-		}
-
-		return null;
-
-	}
-
 	/** Determine if the move is the fastest move current */
-	public static float OSACompatibleTest(SmartPiece sp, Direction d, int index) {
-
-		Coordinate co = new Coordinate(sp.co.x, sp.co.y);
-
-		switch (d) {
-		case UP:
-			co.y++;
-			break;
-		case DOWN:
-			co.y--;
-			break;
-		case RIGHT:
-			co.x++;
-			break;
-		case LEFT:
-			co.y++;
-			break;
-		}
+	public static float OSACompatibleTest(SmartPiece sp, Direction d, int index, Coordinate co) {
 
 		// Determine whether the OSA is in the list or not
 		for (ArrayList<Coordinate> coList : sp.pathTableOSA) {
+			
+			if (coList.isEmpty()) {return -OSA_PATH_SCORE * (float) Math.pow(((double) DECREMENT_OSA_PATH), index);}
+			
+			
 			if (coList.get(index).x == co.x && coList.get(index).y == co.y) {
 				return OSA_PATH_SCORE * (float) Math.pow(((double) DECREMENT_OSA_PATH), index);
 			}
@@ -156,26 +109,8 @@ public class BoardEvaluateAlgorithm {
 	}
 
 	/** Determine if the move will block others move */
-	public static float OSABlockingTest(BrainState bs, SmartPiece sp, Direction d) {
-
-		Coordinate co = new Coordinate(sp.co.x, sp.co.y);
-
+	public static float OSABlockingTest(BrainState bs, SmartPiece sp, Direction d, Coordinate co) {
 		float totalScore = 0.0f;
-
-		switch (d) {
-		case UP:
-			co.y++;
-			break;
-		case DOWN:
-			co.y--;
-			break;
-		case RIGHT:
-			co.x++;
-			break;
-		case LEFT:
-			co.y++;
-			break;
-		}
 
 		boolean isOnePathBlocked = false;
 
@@ -187,8 +122,8 @@ public class BoardEvaluateAlgorithm {
 					if (co.x == coOpp.x && co.y == coOpp.y) {
 						totalScore += OSA_BLOCK_SCORE
 								* ((float) Math.pow(DECREMENT_OSA_PATH, coOppList.indexOf(coOpp)));
-						System.out.println(String.format("# Increase %f score because: %s blocked %s", totalScore,
-								co.toString(), coOpp.toString()));
+//						System.out.println(String.format("# Increase %f score because: %s blocked %s", totalScore,
+//								co.toString(), coOpp.toString()));
 
 					}
 
@@ -219,15 +154,32 @@ public class BoardEvaluateAlgorithm {
 			return ENCOURAGE_MOVE;
 		}
 
-		return sp.wasteStep * WASTE_PENALTY;
+		//return sp.wasteStep * WASTE_PENALTY;
+		return 0.0f;
+	}
+	
+	public static float lineAddition(SmartPiece sp, int n) {
+		
+		float totalScore = 0.0f;
+		
+		if (sp.turn == Piece.VSLIDER) {
+			return LINE_ADDITION*((float)sp.co.y)/n;
+		}
+		
+		if (sp.turn == Piece.HSLIDER) {
+			return LINE_ADDITION*((float)sp.co.x)/n;
+		}
+		
+		return 0.0f;
 	}
 
 	// ========== Preset scores =============
-	public static final float OSA_PATH_SCORE = 2.0f;
-	public static final float DECREMENT_OSA_PATH = 0.8f;
-	public static final float OSA_BLOCK_SCORE = 0.5f;
-	public static final float INCREMENT_OSA_PATH = 1.1f;
-	public static final float WASTE_PENALTY = -0.2f;
-	public static final float ENCOURAGE_MOVE = 0.1f;
-
+	public static final float OSA_PATH_SCORE = 20.0f;
+	public static final float DECREMENT_OSA_PATH = 0.5f;
+	public static final float OSA_BLOCK_SCORE = 100.0f;
+	public static final float INCREMENT_OSA_PATH = 15.0f;
+	public static final float WASTE_PENALTY = -50f;
+	public static final float ENCOURAGE_MOVE = 100f;
+	public static final float CROSS_EDGE = 5.0f;
+	public static final float LINE_ADDITION = 15.0f;
 }
