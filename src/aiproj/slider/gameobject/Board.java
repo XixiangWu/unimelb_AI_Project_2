@@ -380,7 +380,7 @@ public class Board {
 		// null move
 			if (move == null) {
 				return;
-				}
+				} 
 			if(isSimulation){
 				this.pastMoves.add(move);
 			}
