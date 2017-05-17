@@ -99,13 +99,13 @@ public class SmartSliderPlayer implements SliderPlayer {
 
 	public Move move() {
 		// TODO Auto-generated method stub
-		ArrayList<Move> nextMoves = bs.board.generateMoves(bs.turn);
-		
+		//Get the score and best move in a integer list by minimax
 		int[] result = minimax(5,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
-		
+		//If best move is the initial value return null
 		if(result[1]==100){
 			return null;
 		}
+		//update our memory
 		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]),false);
 
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
@@ -125,16 +125,8 @@ public class SmartSliderPlayer implements SliderPlayer {
 	 
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
-             /* This evaluation algorithm still have some problem, so we use a simple one instead as a early version*/
-	    	 //currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, pastMoves)*1000);
-
-//	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
-	         
-	    	  //currentScore = evaluate();
-
-//	    	  currentScore = evaluate();
 	    	 currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, bs.board.pastMoves, bs.board.PieceList)*1000);
-
+	    	 //another easy evaluation
 	         //currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
@@ -148,6 +140,8 @@ public class SmartSliderPlayer implements SliderPlayer {
 	        		bs.board.update(move,true);
 	        	}
 	        	
+	        	//System.out.println(bs.turn);
+	            
 	            if (player == bs.turn) {  // my turn is maximizing player
 	               currentScore = minimax(depth - 1, opp, bs, alpha, beta)[0];
 	               if (currentScore > alpha) {
@@ -155,7 +149,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	                  bestMove = move;
 	               }
 	            } else {  // opp is minimizing player
-	               currentScore = minimax(depth - 1, player,bs, alpha, beta)[0];
+	               currentScore = minimax(depth - 1, opp,bs, alpha, beta)[0];
 	               if (currentScore < beta) {
 	                  beta = currentScore;
 	                  bestMove = move;
