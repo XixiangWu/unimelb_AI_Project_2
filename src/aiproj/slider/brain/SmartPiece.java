@@ -3,7 +3,6 @@ package aiproj.slider.brain;
 import java.util.ArrayList;
 
 import aiproj.slider.Move;
-import aiproj.slider.Move.Direction;
 import aiproj.slider.brain.BrainState.Piece;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.gameobject.Coordinate;

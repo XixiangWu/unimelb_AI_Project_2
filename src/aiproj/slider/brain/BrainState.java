@@ -1,9 +1,6 @@
 package aiproj.slider.brain;
 
 import java.util.ArrayList;
-
-import aiproj.slider.Move;
-import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.exception.IllegalBrainStateInitialization;
 import aiproj.slider.gameobject.Board;
 

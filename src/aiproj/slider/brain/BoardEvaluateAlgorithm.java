@@ -2,16 +2,10 @@ package aiproj.slider.brain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
-
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 import aiproj.slider.brain.BrainState.Piece;
-import aiproj.slider.gameobject.Board;
 import aiproj.slider.gameobject.Coordinate;
-import aiproj.slider.gameobject.Player;
-import sun.tools.jar.resources.jar;
 
 public class BoardEvaluateAlgorithm {
 
@@ -33,26 +27,47 @@ public class BoardEvaluateAlgorithm {
 		Piece roundTurn;
 
 		ArrayList<Coordinate> tempCoordinateLst = new ArrayList<Coordinate>();
-		
-		
+
 		for (int j = moveLst.size() -1 ; j >=0 ; j--) {
 		
 			int i = moveLst.size() - 1 - j;
-			
-			tempCoordinateLst.add(new Coordinate(moveLst.get(j).i, moveLst.get(j).j));
+			Coordinate movePrev = new Coordinate(moveLst.get(j).i,moveLst.get(j).j);
 			
 			switch (moveLst.get(j).d) {
-			case UP: tempCoordinateLst.get(i).y--; break;
-			case DOWN: tempCoordinateLst.get(i).y++; break;
-			case RIGHT: tempCoordinateLst.get(i).x--; break;
-			case LEFT: tempCoordinateLst.get(i).x++; break;
-
-			default:
-				break;
+			case UP: movePrev.y--; break;
+			case DOWN: movePrev.y++; break;
+			case LEFT: movePrev.x++; break;
+			case RIGHT: movePrev.x--; break;
+			default: break;
+			}
+			
+			boolean isFound = false;
+			Coordinate deleteCo = null;
+			int index = 100;
+			for (Coordinate tempCo: tempCoordinateLst) {
+				if (movePrev.x == tempCo.x && movePrev.y == tempCo.y) {
+					isFound = true;
+					deleteCo = tempCo;
+					index = tempCoordinateLst.indexOf(tempCo);
+				}
+			}
+			
+			switch (moveLst.get(j).d) {
+			case UP: movePrev.y++; break;
+			case DOWN: movePrev.y--; break;
+			case LEFT: movePrev.x--; break;
+			case RIGHT: movePrev.x--; break;
+			default: break;
+			}
+			
+			if (isFound) {
+				tempCoordinateLst.remove(index);
+				tempCoordinateLst.add(index, new Coordinate(moveLst.get(j).i, moveLst.get(j).j));
+			} else {
+				tempCoordinateLst.add(new Coordinate(moveLst.get(j).i, moveLst.get(j).j));
 			}
 			
 		}
-		
 		
 		
 		for (int i = 0; i < moveLst.size(); i++) {
@@ -83,21 +98,17 @@ public class BoardEvaluateAlgorithm {
 
 			// Step 2: analyzing every move score.
 			// Step 2.1: comparison against fastest path (for SmartPiece itself)
-			overAllScore += OSACompatibleTest(sp, moveLst.get(i).d, moveTimeMap.get(sp));
+			overAllScore += OSACompatibleTest(sp, moveLst.get(j).d, moveTimeMap.get(sp));
 
 			// Step 2.2: find if the next move will block others move
-			overAllScore += OSABlockingTest(bs, sp, moveLst.get(i).d);
+			overAllScore += OSABlockingTest(bs, sp, moveLst.get(j).d);
 
 			// Step 2.3: penalty for piece already has wasting move
-<<<<<<< HEAD
 			overAllScore += wastePenalty(sp,moveLst.get(i).d);
-		
-			
-=======
-			overAllScore += wastePenalty(sp, moveLst.get(i).d);
+
 
 			System.out.println(sp.toString() + " " + overAllScore);
->>>>>>> origin/master
+
 		}
 
 		return overAllScore;
@@ -175,15 +186,10 @@ public class BoardEvaluateAlgorithm {
 
 					// blocking others way
 					if (co.x == coOpp.x && co.y == coOpp.y) {
-<<<<<<< HEAD
-						totalScore+=OSA_BLOCK_SCORE*((float)Math.pow(DECREMENT_OSA_PATH, coOppList.indexOf(coOpp)));
-						
-=======
 						totalScore += OSA_BLOCK_SCORE
 								* ((float) Math.pow(DECREMENT_OSA_PATH, coOppList.indexOf(coOpp)));
 						System.out.println(String.format("# Increase %f score because: %s blocked %s", totalScore,
 								co.toString(), coOpp.toString()));
->>>>>>> origin/master
 					}
 
 					isOnePathBlocked = true;
