@@ -1,4 +1,50 @@
 
 
 ========================================================================
-- Optimised Search Algorithm (aka OSA)
+# Optimised Search Algorithm (aka OSA)
+
+When we are designing this AI player, the first thing comes to our minds is to let the AI understand the meaning of "win". To make that happened, we decide to use DFS and BFS algorithm to explore most of the possibilities of movement of every SmartPiece. After we tried DFS and BFS from two different sides, we found several problems with both these two algorithms:
+
+DFS pros
+- Generally, DFS uses recursion which in this case won't work that good. In this game, the Goal point is actually moving along one side of the board(right edge or top edge), the recursion will be confused when finding the path. Furthermore, if we do not use the "Goal point" but "Goal edge" as a instead as the symbol of DFS algorithm finished, the output is mess and useless. During our testing, it is to difficult for us to modify the DFS in order to approach our purpose of using the DFS (which is to use a limited time to find a better path to edge).
+
+BFS pros
+- We implemented the BFS by treating grid as a maze, the time efficiency and space consuming is not what we want, especially it had a very low efficiency when we tried to modify the "better path" stored in each piece. 
+
+Therefore, after our two time consuming experiments, we think that we should develop an algorithm that just suits this game with a good efficiency and better result compares to DFS.
+
+Our OSA(Optimised Search Algorithm) combines the following principles:
+- The shortest distance between two points is a straight line
+- Move towards left and right but no block ahead is time consuming.
+- Move towards the opponent's starting edge is better than move along opponent's end edge.
+- Stand on opponent's "OSA path" is better than move to other grid.
+.......
+
+The Optimised Search Algorithm is designed to generate a better path for every piece. It is a leading path when piece is confused which way to go.
+
+Update of OSA:
+- OSA is easy to update compares to other searching algorithms. For instance when updating the OSA, it only receives move and delete the "suggest paths" which do not have this move.
+
+Recalculation of OSA:
+Sometimes OSA needs to be recalculated, for instance when a move is completely blocked by noun-blank pieces, the move is forced to move off the suggestion path, and so on. In all this circumstances, OSA will be recalculated for each piece.
+
+
+========================================================================
+# Board Evaluate Algorithm (aka BEA)
+
+- BEA(Board Evaluate Alogirhtm) is the Evaluation method we use in the game, it has three part of evaluating the score:
+
+- OSA move:
+-> this evaluation is to evaluate the giving pieces is moving along the suggestion(OSA path) or not.
+
+- Blocking move:
+-> this evaluation is to evaluate if the move block in others OSA path or not.
+
+- Waste move:
+-> this evaluation is to evaluate if a piece already had one or some waste moves(move off the suggest path), we should encourage this piece to move towards the end rather than let it move around with other purposes.
+
+========================================================================
+# Alpha-Beta pruning
+
+
+

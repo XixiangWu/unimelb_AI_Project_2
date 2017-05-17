@@ -2,6 +2,7 @@ package aiproj.slider;
 import java.util.ArrayList;
 import java.util.List;
 import aiproj.slider.Referee.Piece;
+import aiproj.slider.brain.BoardEvaluateAlgorithm;
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.brain.SmartPiece;
@@ -151,7 +152,8 @@ public class SmartSliderPlayer implements SliderPlayer {
 
 	    	  //currentScore = evaluate();
 
-	    	 currentScore = evaluate();
+	    	  currentScore = evaluate();
+//	    	 currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, pastMoves)*1000);
 
 	         //currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};

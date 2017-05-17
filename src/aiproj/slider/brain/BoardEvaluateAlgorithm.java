@@ -21,7 +21,7 @@ public class BoardEvaluateAlgorithm {
 	/** this method is used to analyze the whole game in current state, it assumes that the bs is at the 
 	 * current state(which is waiting player's move), move is the testing move which a score needs to be 
 	 * provided after evaluating */
-	public static float BEA(BrainState bs, Move[] moveLst) {
+	public static float BEA(BrainState bs, ArrayList<Move> moveLst) {
 		
 		// overall Score
 		float overAllScore = 0.0f;
@@ -30,7 +30,16 @@ public class BoardEvaluateAlgorithm {
 		Piece oppoTurn = (playerTurn == Piece.HSLIDER) ? Piece.VSLIDER : Piece.VSLIDER;
 		Piece roundTurn;
 		
-		for (int i = 0; i<moveLst.length; i++) {
+		for (int i = 0; i<moveLst.size(); i++) {
+			
+//			Coordinate co = new Coordinate(sp.co.x, sp.co.y);
+//			
+//			switch (d) {
+//			case UP: co.y++; break;
+//			case DOWN: co.y--; break;
+//			case RIGHT: co.x++; break;
+//			case LEFT: co.y++; break;
+//			}
 			
 			// Step 1: Retrieve SmartPiece for every move
 			SmartPiece sp;
@@ -39,12 +48,12 @@ public class BoardEvaluateAlgorithm {
 			roundTurn = (i%2==0) ? playerTurn : oppoTurn;
 			
 			if (roundTurn == playerTurn) {
-				sp = retrieveSmartPiece(moveLst[i].i, 
-										moveLst[i].j,
+				sp = retrieveSmartPiece(moveLst.get(i).i, 
+										moveLst.get(i).j,
 										bs.pieceListSelf);
 			} else {
-				sp = retrieveSmartPiece(moveLst[i].i, 
-										moveLst[i].j,
+				sp = retrieveSmartPiece(moveLst.get(i).i, 
+										moveLst.get(i).j,
 										bs.pieceListOpp);
 			}
 			
@@ -58,13 +67,13 @@ public class BoardEvaluateAlgorithm {
 			
 			// Step 2: analyzing every move score.
 			// Step 2.1: comparison against fastest path (for SmartPiece itself)
-			overAllScore += OSACompatibleTest(sp, moveLst[i].d, moveTimeMap.get(sp));
+			overAllScore += OSACompatibleTest(sp, moveLst.get(i).d, moveTimeMap.get(sp));
 					
 			// Step 2.2: find if the next move will block others move
-			overAllScore += OSABlockingTest(bs, sp, moveLst[i].d);
+			overAllScore += OSABlockingTest(bs, sp, moveLst.get(i).d);
 			
 			// Step 2.3: penalty for piece already has wasting move
-			overAllScore += wastePenalty(sp,moveLst[i].d);
+			overAllScore += wastePenalty(sp,moveLst.get(i).d);
 		
 			System.out.println(sp.toString() + " " + overAllScore);
 		}
