@@ -392,17 +392,16 @@ public class Board {
 				case LEFT:	toi--; break;
 			}
 			
-
 			if (piece == Piece.HSLIDER && toi == n) {
 				grid[move.i][move.j] = Piece.BLANK;
 				hsliders--;
-				updateList(Hlist,move.i,move.j,toi,toj,3);
+				updateList(Hlist,move.i,move.j,toi,toj,2);
 				return;
 
 			} else if (piece == Piece.VSLIDER && toj == n){
 				grid[move.i][move.j] = Piece.BLANK;
 				vsliders--;
-				updateList(Vlist,move.i,move.j,toi,toj,3);
+				updateList(Vlist,move.i,move.j,toi,toj,2);
 				
 				return;
 			}else{
@@ -440,14 +439,14 @@ public class Board {
 				piece = Piece.HSLIDER;
 				hsliders++;
 				grid[move.i][move.j]=piece;
-				updateList(Hlist,toi,toj,move.i,move.j,2);
+				updateList(Hlist,move.i,move.j,toi,toj,3);
 				
 			} else if (move.d == Move.Direction.UP && toj == n){
 				piece = Piece.VSLIDER;
 				vsliders++;
 				grid[move.i][move.j]=piece;
-				System.out.println(vsliders);
-				updateList(Vlist,toi,toj,move.i,move.j,2);
+               
+				updateList(Vlist,move.i,move.j,toi,toj,3);
 				
 			}else{
 				piece = grid[toi][toj];
@@ -476,11 +475,14 @@ public class Board {
 			  if(piece.co.x==i && piece.co.y==j){
 
 				  switch (command){
+				  //SWAP
 				  case 1:
 					 piece.co.x = toi;
 					 piece.co.y = toj;
+				  //OUT
 				  case 2:
 					 piece.isOffEdge=true;
+				  //IN
 				  case 3:
 					 piece.isOffEdge=false;
 				 }

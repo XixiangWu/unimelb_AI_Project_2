@@ -48,9 +48,13 @@ public class SmartSliderPlayer implements SliderPlayer {
 		//update board stored in bs
 		bs.board.update(move);
 		
-		for (SmartPiece piece: bs.board.getVlist()){
+		for (SmartPiece piece: bs.board.getHlist()){
+			 if(piece.isOffEdge==false){
 			System.out.format("piece:%d,%d\n",piece.co.x,piece.co.y);
+			}
+		
 		}
+		
 			
 	}
 
@@ -60,13 +64,20 @@ public class SmartSliderPlayer implements SliderPlayer {
 		// TODO Auto-generated method stub
 //		System.out.println("Before MINI");
 //		System.out.println(bs.board.toString());
-		int[] result = minimax(8,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
+		
+		
+		 ArrayList<Move> pastMoves = new ArrayList<Move>();
+		int[] result = minimax(3,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE,pastMoves);
 //		System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
 //		System.out.println("Before update");
 //		System.out.println(bs.board.toString());
 		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]));
 //		System.out.println("After update");
 //		System.out.println(bs.board.toString());
+		if(result[1]==100){
+			return null;
+		}
+		
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
 
 		
@@ -74,7 +85,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	
 	
 	 
-	private int[] minimax(int depth, Piece player,BrainState bs,int alpha, int beta) {
+	private int[] minimax(int depth, Piece player,BrainState bs,int alpha, int beta,ArrayList<Move> pastMoves) {
 		 final char[] DRE = {'U', 'D', 'L', 'R'};
 		 Move bestMove = new Move(100,100,Move.Direction.RIGHT);
 	      // Generate possible next moves in a List 
@@ -83,7 +94,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	      //for (Move move : nextMoves) {
 	    	//  System.out.format("all moves%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
 	      //}
-	      //ArrayList<Move> pastMoves = new ArrayList<Move>();
+	     
 	      
 	      // myself is maximizing; while opp is minimizing
 	      
@@ -94,33 +105,37 @@ public class SmartSliderPlayer implements SliderPlayer {
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
 	    	  //currentScore = evaluate();
+	        	
+//	    	  System.out.println("haha");
+//	    	  for(Move past:pastMoves){
+//	        		System.out.format("moveby:%d,%d,%c\n",past.i,past.j,DRE[past.d.ordinal()]);
+//	        	}
 	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
 		      
 	      } else {
 	    	  
-	    	  //for (Move ss : nextMoves) {
-		    //	  System.out.format("all:%d,%d,%c\n",ss.i,ss.j,DRE[ss.d.ordinal()]);
-		      //}
 	         for (Move move : nextMoves) {
 	            // Try this move for the current "player"
 	        	//System.out.format("moveby:%d,%d,%c\n",move.i,move.j,DRE[move.d.ordinal()]);
 	        	if(bs.board.canMove(move.i,move.j)){
 	        		bs.board.update(move);
 	        	}
+	        	pastMoves.add(move);
+	        	
+	        	
 				
 				//System.out.println(bs.board.toString());
-	            //pastMoves.add(move);
+	            
 	            
 	            if (player == bs.turn) {  // my turn is maximizing player
-	               currentScore = minimax(depth - 1, opp, bs, alpha, beta)[0];
+	               currentScore = minimax(depth - 1, opp, bs, alpha, beta,pastMoves)[0];
 	               if (currentScore > alpha) {
 	                  alpha = currentScore;
 	                  bestMove = move;
-	                 
 	               }
 	            } else {  // opp is minimizing player
-	               currentScore = minimax(depth - 1, player,bs, alpha, beta)[0];
+	               currentScore = minimax(depth - 1, player,bs, alpha, beta,pastMoves)[0];
 	               if (currentScore < beta) {
 	                  beta = currentScore;
 	                  bestMove = move;
@@ -129,6 +144,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 	            
 	            // Undo move
 	            bs.board.undoMove(move);
+	            pastMoves.remove(0);
 	            if (alpha >= beta) break;
 	         }
 	         return new int[] {(player == bs.turn) ? alpha : beta, bestMove.i,bestMove.j,bestMove.d.ordinal()};
