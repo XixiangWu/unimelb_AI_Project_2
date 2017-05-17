@@ -1,6 +1,5 @@
 package aiproj.slider;
 import java.util.ArrayList;
-import java.util.List;
 import aiproj.slider.Referee.Piece;
 import aiproj.slider.brain.BoardEvaluateAlgorithm;
 import aiproj.slider.brain.BrainState;
@@ -42,16 +41,11 @@ public class SmartSliderPlayer implements SliderPlayer {
 	@Override
 	public void update(Move move) {
 
-			
+		
 		//update board stored in bs
+		
 		bs.board.update(move,false);
 		
-		for (SmartPiece piece: bs.board.getVlist()){
-			 if(piece.isOffEdge==false){
-				 System.out.format("piece:%d,%d\n",piece.co.x,piece.co.y);
-			}
-		
-		}
 		
 
 		if (move!=null) {
@@ -112,23 +106,22 @@ public class SmartSliderPlayer implements SliderPlayer {
 		// TODO Auto-generated method stub
 		
 		int[] result = minimax(4,bs.turn,bs,Integer.MIN_VALUE, Integer.MAX_VALUE);
-//		System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
+		System.out.format("new move:%d,%d,%c\n",result[1],result[2],DRE[Move.Direction.values()[result[3]].ordinal()]);
 //		System.out.println("Before update");
 //		System.out.println(bs.board.toString());
 		if(result[1]==100){
 			return null;
 		}
 		bs.board.update(new Move(result[1],result[2],Move.Direction.values()[result[3]]),false);
-//		System.out.println("After update");
-//		System.out.println(bs.board.toString());
+		System.out.println("After update");
+		System.out.println(bs.board.toString());
 
 		
 		return new Move(result[1],result[2],Move.Direction.values()[result[3]]);
 
 		
 	}
-	
-	
+
 	 
 	private int[] minimax(int depth, Piece player,BrainState bs,int alpha, int beta) {
 		 final char[] DRE = {'U', 'D', 'L', 'R'};
