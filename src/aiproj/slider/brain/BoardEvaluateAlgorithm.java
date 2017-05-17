@@ -89,15 +89,11 @@ public class BoardEvaluateAlgorithm {
 			overAllScore += OSABlockingTest(bs, sp, moveLst.get(i).d);
 
 			// Step 2.3: penalty for piece already has wasting move
-<<<<<<< HEAD
-			overAllScore += wastePenalty(sp,moveLst.get(i).d);
-		
-			
-=======
+
 			overAllScore += wastePenalty(sp, moveLst.get(i).d);
 
 			System.out.println(sp.toString() + " " + overAllScore);
->>>>>>> origin/master
+
 		}
 
 		return overAllScore;
@@ -175,15 +171,12 @@ public class BoardEvaluateAlgorithm {
 
 					// blocking others way
 					if (co.x == coOpp.x && co.y == coOpp.y) {
-<<<<<<< HEAD
-						totalScore+=OSA_BLOCK_SCORE*((float)Math.pow(DECREMENT_OSA_PATH, coOppList.indexOf(coOpp)));
-						
-=======
+
 						totalScore += OSA_BLOCK_SCORE
 								* ((float) Math.pow(DECREMENT_OSA_PATH, coOppList.indexOf(coOpp)));
 						System.out.println(String.format("# Increase %f score because: %s blocked %s", totalScore,
 								co.toString(), coOpp.toString()));
->>>>>>> origin/master
+
 					}
 
 					isOnePathBlocked = true;

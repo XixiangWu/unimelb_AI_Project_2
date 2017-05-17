@@ -131,17 +131,17 @@ public class SmartSliderPlayer implements SliderPlayer {
              /* This evaluation algorithm still have some problem, so we use a simple one instead as a early version*/
 	    	 //currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, pastMoves)*1000);
 
-<<<<<<< HEAD
+
 	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 	         
-=======
+
 	    	  //currentScore = evaluate();
 
 //	    	  currentScore = evaluate();
-	    	 currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, bs.board.pastMoves)*1000);
+	    	 //currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, bs.board.pastMoves)*1000);
 
 	         //currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
->>>>>>> origin/master
+
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
 		      
 	      } else {
