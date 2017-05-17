@@ -56,7 +56,7 @@ public class SmartSliderPlayer implements SliderPlayer {
 		case UP: newCoor.y++; break;
 		case DOWN: newCoor.y--; break;
 		case LEFT: newCoor.x--; break;
-		case RIGHT: newCoor.y++; break;
+		case RIGHT: newCoor.x++; break;
 
 		default:
 			break;
