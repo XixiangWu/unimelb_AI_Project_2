@@ -128,16 +128,9 @@ public class SmartSliderPlayer implements SliderPlayer {
 	 
 	      if (nextMoves.isEmpty() || depth == 0) {
 	         // Game over or depth reached, evaluate score
-             /* This evaluation algorithm still have some problem, so we use a simple one instead as a early version*/
-	    	 //currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, pastMoves)*1000);
-
-//	         currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
-	         
-	    	  //currentScore = evaluate();
-
-//	    	  currentScore = evaluate();
+             
 	    	 currentScore = ((int)BoardEvaluateAlgorithm.BEA(bs, bs.board.pastMoves, bs.board.PieceList)*1000);
-
+	    	 //another easy evaluation
 	         //currentScore = bs.board.BlockOpps(player)+bs.board.validMoves(player);
 
 	         return new int[] {currentScore, bestMove.i, bestMove.j,bestMove.d.ordinal()};
