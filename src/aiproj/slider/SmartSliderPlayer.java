@@ -1,7 +1,6 @@
 package aiproj.slider;
 import java.util.ArrayList;
 import aiproj.slider.brain.BrainState.Piece;
-import aiproj.slider.brain.BoardEvaluateAlgorithm;
 import aiproj.slider.brain.BrainState;
 import aiproj.slider.brain.OptimisedSearchAlgorithm.OSA_STATE;
 import aiproj.slider.brain.SmartPiece;
